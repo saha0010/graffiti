@@ -1,0 +1,15 @@
+# --------------------------------------------------------------------------
+# $File: //depot/vlg/Demos/GLSL/gooch/Aufgabenstellung/buildtype.txt $
+# $Revision: #1 $
+# $Date: 2012/04/19 $
+# --------------------------------------------------------------------------
+# Makefiles  mit mehr Ausgabe
+set(CMAKE_VERBOSE_MAKEFILE TRUE CACHE STRING "Mehr Ausgaben" FORCE)
+
+SET(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Nur Release"
+      FORCE)
+
+# Für Visual Studio (ein "multi-target IDE" muss die folgende Variable verändert werden
+set(CMAKE_CONFIGURATION_TYPES "Release" CACHE STRING "Nur Release" FORCE)
+
