@@ -8,8 +8,8 @@
 option(USE_GLUT64 "glut64 installed" ON)    
 
 if(WIN32)
-	set(VLG_LIB_DIR "C:/local/lib" CACHE PATH "vlg and vlgGlut Lib Path")
-	set(VLG_HEADER_DIR "C:/local/include" CACHE PATH "vlg and vlgGlut Header Path")
+	set(VLG_LIB_DIR "C:/Visual Studio/local/lib" CACHE PATH "vlg and vlgGlut Lib Path")
+	set(VLG_HEADER_DIR "C:/Visual Studio/local/include" CACHE PATH "vlg and vlgGlut Header Path")
 elseif(APPLE)
 	set(VLG_LIB_DIR "/Developer/usr/local/lib" CACHE PATH "vlg and vlgGlut Lib Path")
 	set(VLG_HEADER_DIR "/Developer/usr/local/include" CACHE PATH "vlg and vlgGlut Header Path")

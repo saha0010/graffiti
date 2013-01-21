@@ -5,8 +5,10 @@
 #include <cmath>
 
 // Default-Konstruktor
-GraffitiEngine::GraffitiEngine(void) :  glLinesObs(lineList), glStampObs(stampList), glCircleObs(circleList),
-										glDrawObs(lineList),
+GraffitiEngine::GraffitiEngine(void) :  glPolyLineObs(lineList),
+										glStampObs(stampList), glCircleObs(circleList),
+										glCircleLineObs(lineList),
+										t(true),
                                         pressed(false), tracker(false),
 										wX(0.0f), wY(0.0f), wZ(0.0f), xMin(-4.0), xMax(4.0f), yMin(-3.0f),
 										yMax(3.0f), deltaX(xMax-xMin), deltaY(yMax-yMin), pitch(16.0f), colorIndex(0),												saveCounter(1), 
@@ -61,12 +63,8 @@ void GraffitiEngine::initContext(void)
 //!OpenGL-Observer hinzufuegen (Aus InitConext auslagern)
 void GraffitiEngine::attachObserver(void)
 { 
-	std::cout << "attachGLObserver(&glDrawObs)" << std::endl;
-    attachGLObserver(&glDrawObs);
-	std::cout << "attachGLObserver(&glLinesObs)" << std::endl;
-    attachGLObserver(&glLinesObs);
-	
-
+	std::cout << "attachGLObserver(&glCircleLineObs)" << std::endl;
+    attachGLObserver(&glCircleLineObs);
 	std::cout << "attachGLObserver(&glWallObs)" << std::endl;
     attachGLObserver(&glWallObs);
 	std::cout << "attachGLObserver(&glStampObs)" << std::endl;
@@ -79,16 +77,16 @@ void GraffitiEngine::attachObserver(void)
 //!VRPN-Geräte aktivieren
 void GraffitiEngine::VRPNGeraete(void)
 {	
-	useAnalogDevice("Mouse0@localhost");
-	useButtonDevice("Keyboard0@localhost");	
+	//useAnalogDevice("Mouse0@localhost");
+//	useButtonDevice("Keyboard0@localhost");	
 //	useButtonDevice("WiiMote0@localhost");
 //	useTrackerDevice("Tracker0@zwo210-GONZO.ds.fh-kl.de");
 //	useButtonDevice("WiiMote0@davis.ds.fh-kl.de");
 //	useTrackerDevice("Tracker0@miles.ds.fh-kl.de");
 
 
-	//  useAnalogDevice("Mouse0@AcerTablet");
-	//  useButtonDevice("Keyboard0@AcerTablet");
+	  useAnalogDevice("Mouse0@AcerTablet");
+	  useButtonDevice("Keyboard0@AcerTablet");
 }
 
 
@@ -97,7 +95,7 @@ void GraffitiEngine::handleAnalog(void *userData, const vrpn_ANALOGCB a)
 { 
 	wX = a.channel[0];
 	wY = a.channel[1];
-	wZ = 0.15f;
+	wZ = 0.5f;
 
 	zUndoSize = undoList.size();
 //!Wenn Sprühknopf gedrückt und tracker ausgeschaltet ist
@@ -196,7 +194,6 @@ void GraffitiEngine::handleButton(void *userData, const vrpn_BUTTONCB b)
 //!Callback für Tracker0
 void GraffitiEngine::handleTracker(void* userData, const vrpn_TRACKERCB t)
 {
-	
 	// Tracker-Signal vorhanden
 	wall->received=true;
 	if(tracker)
@@ -236,7 +233,11 @@ void GraffitiEngine::handleTracker(void* userData, const vrpn_TRACKERCB t)
 			lineList.front().myX.push_back(coordAdjuTracker(true));
 			lineList.front().myY.push_back(coordAdjuTracker(false));
 			lineList.front().myZ.push_back(wZ);		//new
-
+			lineList.front().myUndoSizeZ = zUndoSize;
+		std::cout<<"----------------------------"<<std::endl;
+std::cout<<wZ<<std::endl;
+		std::cout<<"----------------------------"<<std::endl;
+	
 		}
 
 		if(t.sensor == 8) //Linke Hand
@@ -250,7 +251,7 @@ void GraffitiEngine::handleTracker(void* userData, const vrpn_TRACKERCB t)
 			wX = trackAry[0];
 			wY = trackAry[1];
 			wZ = trackAry[2];
-			zUndoSize = undoList.size();
+			
 
 			trackAryLeft[1] = (cosPitch * t.pos[1] + sinPitch * t.pos[2]) -0.82f;
 
@@ -323,12 +324,12 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 			xGeste = coordAdjuTracker(true);
 			//yGeste = coordAdjuTracker(false);
 			s = "Hand";
-			std::cout<<"----------------------------"<<std::endl;
+			/*std::cout<<"----------------------------"<<std::endl;
 			//std::cout<< s <<" in Gestenbereich! Y = "    <<yGeste<<std::endl;
-			std::cout<< s <<" in Gestenbereich! X = "    <<xGeste<<std::endl;
+			std::cout<< s <<" in Gestenbereich! X = "    <<xGeste<<std::endl;wwwww
 			std::cout<< s <<" in Gestenbereich! delta = " <<delta<<std::endl;
 			std::cout<<"----------------------------"<<std::endl;
-			std::cout<< s <<" nextTexturGestureTracker"<<std::endl;
+			std::cout<< s <<" nextTexturGestureTracker"<<std::endl;*/
 	
 			if(!pressed)
 			{
@@ -415,8 +416,23 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 		wall->previousTexture();
 		break;
 	case 'o':
-		if(!lineList.empty())
-			//lineList.back().changePolyLineMode();
+		//Change Observer CircleLine = Default
+
+		if(t == true)
+		{
+			detachGLObserver(&glCircleLineObs);
+			attachGLObserver(&glPolyLineObs);
+			lineList.front().notify();
+			t= true;
+		}
+		else
+		{		
+			detachGLObserver(&glPolyLineObs);
+			attachGLObserver(&glCircleLineObs);
+			lineList.front().notify();
+			t=false;
+		}
+
 		break;
 	case'd':
 		nextColor();	

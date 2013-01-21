@@ -27,10 +27,10 @@ make_directory(${CMAKE_CURRENT_BINARY_DIR}/savedPictures)
 # Das ausführbare Programm
 add_executable (Graffiti graffiti.cpp GraffitiEngine.cpp GraffitiEngine.h 
                 PolyLine.cpp PolyLine.h
-                PolyLineOGLView.cpp PolyLineOGLView.h 
+                PolyLineView.cpp PolyLineView.h 
 				Wall.h Wall.cpp 
 				WallView.h WallView.cpp
-				PolyLineOGLDrawView.cpp PolyLineOGLDrawView.h
+				CircleLineView.cpp CircleLineView.h
 				Stamp.h Stamp.cpp
 				StampView.h StampView.cpp
 				Circle.h Circle.cpp

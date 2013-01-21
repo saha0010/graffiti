@@ -17,8 +17,8 @@
 
 if(NOT APPLE)
       # Pfade für die Verwendung von VRPN 
-      set(VRPN_LIB_DIR "C:/local/lib" CACHE PATH "VRPN library path")
-      set(VRPN_HEADER_DIR "C:/local/include/vrpn" CACHE PATH "VRPN header path")
+      set(VRPN_LIB_DIR "C:/Visual Studio/vrpn32/lib" CACHE PATH "VRPN library path")
+      set(VRPN_HEADER_DIR "C:/Visual Studio/vrpn32/include" CACHE PATH "VRPN header path")
 else()
 	set(VLG_LIB_DIR "/Developer/usr/local/lib" CACHE PATH "VRPN library path")
 	set(VLG_HEADER_DIR "/Developer/usr/local/include" CACHE PATH "vRPN header path")

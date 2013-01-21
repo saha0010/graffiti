@@ -1,0 +1,53 @@
+#include "PolyLineView.h"
+
+#include <iostream>
+#include <cmath>
+
+#ifdef _WIN32
+// Für Windows
+#include <windows.h>
+#endif
+#include <GL/gl.h>
+
+//!Konstruktor
+PolyLineView::PolyLineView(std::vector<Line> &l) : line(l)
+{
+	//std::cout << "PolyLineView(vector<PolyLine> &l)" << std::endl;
+	for(int i = 0; i<line.size();i++)
+	{
+		line.at(i).attach(this);
+	}
+}
+
+
+bool PolyLineView::update(const vlgSubject &changedSubject)
+{
+
+	return true;
+}
+
+//!Grafische Ausgabe wird implzit in Graffiti::display() aufgerufen
+	/*!Ausgabe für alle PolyLines die sich in vector lineList befinden */
+void PolyLineView::draw(void)
+{
+	for(int i = 0;i<line.size();i++)
+	{
+	zd = (float) (line.at(i).getMyUndoSizeZ()*0.001f);	// z-Ebenen der Linien innerhalb der Linienliste
+	//zdO = (float) (0.01f * line.size());				// z-E der aktuellen/ersten Linie in Abhängigkeit der Max-Anzahl
+	zdO = (float) (0.01f * line.at(i).getMyUndoSizeZ());
+	if ( i==0 ) {zE=zdO;} else {zE=zd;}					// Prüfe auf Listenposition 
+
+		glColor3f(line.at(i).getActiveColor()->getRed(),
+		  line.at(i).getActiveColor()->getGreen(), 
+		  line.at(i).getActiveColor()->getBlue());
+		
+		for(int j = 0; j< line.at(i).myX.size();j++)
+		{
+			glVertex3f(line.at(i).myX.at(j),
+						line.at(i).myY.at(j),		
+						zE);
+		}
+	}
+			
+}
+

@@ -1,11 +1,10 @@
 #ifndef GRAFFITIENGINE
 #define GRAFFITIENGINE
 
-/*! Observer der gemalten Objekte*/
-#include "PolyLineOGLView.h"
 
-/*! Observer für des momentan gemalten Objektes*/
-#include "PolyLineOGLDrawView.h"
+#include "PolyLineView.h"
+
+#include "CircleLineView.h"
 
 /*! Observer für den Hintergrund*/
 #include "WallView.h"
@@ -58,19 +57,22 @@ private:
 	Wall *wall;
 
 	//!Observer für alle gezeichneten PolyLines(OpenGL Ausgabe)
-	PolyLineOGLView glLinesObs;	
+	PolyLineView glPolyLineObs;
+
 	//!Observer für die Stamps(Bitmaps drauf kleben)
 	StampView glStampObs;
 	//!Observer für Kreise
 	CircleView glCircleObs;
+	
 	//!Observer für die im Moment gezeichnet werdende PolyLine (OpenGL Ausgabe) 
-	PolyLineOGLDrawView glDrawObs;	
+	CircleLineView glCircleLineObs;	
+	
 	//!Observer für den Hintergrund
 	WallView glWallObs;
 
 	
 	bool pressed; //!< Variable um zu erkennen ob "Spühtaste gedrückt ist"
-	
+	bool t;		//!< Variable umn zu erknnen mit welcher View die Linien angezeigt werden sollen t = true -> CircleLineView else PolyLineView
 	bool tracker; //!< Varibale um zu erkennen ob Tracker oder Maus benutzt wird
 
 	// Einkommende Werte der Maus bzw. des Trackers	
