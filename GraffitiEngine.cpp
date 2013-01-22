@@ -77,16 +77,16 @@ void GraffitiEngine::attachObserver(void)
 //!VRPN-Geräte aktivieren
 void GraffitiEngine::VRPNGeraete(void)
 {	
-	//useAnalogDevice("Mouse0@localhost");
-//	useButtonDevice("Keyboard0@localhost");	
+	useAnalogDevice("Mouse0@localhost");
+	useButtonDevice("Keyboard0@localhost");	
 //	useButtonDevice("WiiMote0@localhost");
 //	useTrackerDevice("Tracker0@zwo210-GONZO.ds.fh-kl.de");
 //	useButtonDevice("WiiMote0@davis.ds.fh-kl.de");
 //	useTrackerDevice("Tracker0@miles.ds.fh-kl.de");
 
 
-	  useAnalogDevice("Mouse0@AcerTablet");
-	  useButtonDevice("Keyboard0@AcerTablet");
+	//  useAnalogDevice("Mouse0@AcerTablet");
+	//  useButtonDevice("Keyboard0@AcerTablet");
 }
 
 
@@ -337,7 +337,6 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 				delta = xGeste - temp;
 				if(!leftHand)
 				{
-					std::cout<<"if(!leftHand), Start der Geste"<<std::endl;
 					temp = xGeste;
 					leftHand =true;
 				}
@@ -423,14 +422,14 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 			detachGLObserver(&glCircleLineObs);
 			attachGLObserver(&glPolyLineObs);
 			lineList.front().notify();
-			t= true;
+			t= false;
 		}
 		else
 		{		
 			detachGLObserver(&glPolyLineObs);
 			attachGLObserver(&glCircleLineObs);
 			lineList.front().notify();
-			t=false;
+			t=true;
 		}
 
 		break;

@@ -30,23 +30,28 @@ bool PolyLineView::update(const vlgSubject &changedSubject)
 	/*!Ausgabe für alle PolyLines die sich in vector lineList befinden */
 void PolyLineView::draw(void)
 {
+glPolygonMode(GL_FRONT, GL_FILL);
+
 	for(int i = 0;i<line.size();i++)
 	{
 	zd = (float) (line.at(i).getMyUndoSizeZ()*0.001f);	// z-Ebenen der Linien innerhalb der Linienliste
-	//zdO = (float) (0.01f * line.size());				// z-E der aktuellen/ersten Linie in Abhängigkeit der Max-Anzahl
+
 	zdO = (float) (0.01f * line.at(i).getMyUndoSizeZ());
-	if ( i==0 ) {zE=zdO;} else {zE=zd;}					// Prüfe auf Listenposition 
+	if ( i==0 ) 
+		{zE=zdO;} 
+	else {zE=zd;}					
 
 		glColor3f(line.at(i).getActiveColor()->getRed(),
 		  line.at(i).getActiveColor()->getGreen(), 
 		  line.at(i).getActiveColor()->getBlue());
-		
+glBegin(GL_LINE_STRIP);
 		for(int j = 0; j< line.at(i).myX.size();j++)
 		{
 			glVertex3f(line.at(i).myX.at(j),
 						line.at(i).myY.at(j),		
 						zE);
 		}
+		glEnd();
 	}
 			
 }
