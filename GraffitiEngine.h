@@ -310,7 +310,7 @@ private:
 		* \sa coordAdjuTracker()
 	*/
 
-	float coordAdjuMouse(bool chooseVariable); //!< bool = true return x | bool = false return y  
+	void coordAdjuMouse(float coords[]); 
 	//!Umrechnen des Koordinatensystems VRPN-Tracker(Kinect) -> Leinwand
 	/*!
 		* Die coordAdjuTracker-Funktion rechnet die erhaltenen 
@@ -323,7 +323,7 @@ private:
 		* \return \a coordAdjuTracker liefert den Transformierten x oder y Wert zurück
 		* \sa coordAdjuMouse()
 	*/
-	float coordAdjuTracker(bool chooseVariable);
+	//float coordAdjuTracker(bool chooseVariable);
 
 	//! Y-Werte an den Neigungswinkel der Kinect anpassen, z-Rotation hinzuaddieren
 	/*!
@@ -334,7 +334,9 @@ private:
 		* \return \a yAnNeigungswinkelAnpassen liefert den y-Wert, ohne Rotationanteil zurück
 		* \sa coordAdjuTracker()
 	*/
-	float yAnNeigungswinkelAnpassen(void);
+	//float yAnNeigungswinkelAnpassen(void);
+
+	void coordAdju(float[3]);
 
 	//! Funktion zum Bild speichern im DDS-Format in den Buildordner
 		/*!

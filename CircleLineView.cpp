@@ -30,23 +30,27 @@ bool CircleLineView::update(const vlgSubject &changedSubject)
 	//! Ausgabe der momentan gemalten Line 
 void CircleLineView::draw(void)
 {	float h =  2.0f*static_cast<float>(M_PI)/static_cast<float>(32);
+//	glEnable(GL_BLEND);
+//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	for(int i = 0;i<line.size();i++)
 	{
-		zd = (float) (line.at(i).getMyUndoSizeZ()*0.001f);	// z-Ebenen der Linien innerhalb der Linienliste
-		//zdO = (float) (0.01f * line.size());				// z-E der aktuellen/ersten Linie in Abhängigkeit der Max-Anzahl
-		zdO = (float) (0.01f * line.at(i).getMyUndoSizeZ());
-		if ( i==0 ) {zE=zdO;} else {zE=zd;}					// Prüfe auf Listenposition 
+		//zdO = (float) (0.01f * line.size());				// z-E der aktuellen/ersten Linie in Abhängigkeit der Max-
+		if (i == 0) 
+			{zE=2;} 
+		else 
+		{
+			zE= (float) (line.at(i).getMyUndoSizeZ()*0.02f);
+		}		
 
 			glColor3f(line.at(i).getActiveColor()->getRed(),
 			  line.at(i).getActiveColor()->getGreen(), 
 			  line.at(i).getActiveColor()->getBlue());
 
-			glPolygonMode(GL_FRONT, GL_FILL);
 			
 		for(int j = 0; j< line.at(i).myX.size();j++)
 		{
-					
+		glPolygonMode(GL_FRONT, GL_FILL);		
 		glBegin(GL_TRIANGLE_FAN);
 			for (int k=32; k>=0; k--){
 

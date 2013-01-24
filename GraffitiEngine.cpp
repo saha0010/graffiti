@@ -93,26 +93,27 @@ void GraffitiEngine::VRPNGeraete(void)
 //!Callback für Maus0
 void GraffitiEngine::handleAnalog(void *userData, const vrpn_ANALOGCB a)
 { 
-	wX = a.channel[0];
-	wY = a.channel[1];
-	wZ = 0.5f;
+	trackAry[0]= a.channel[0];
+	trackAry[1]= a.channel[1]; 
+	trackAry[2]= 0.5f;
+
+	coordAdjuMouse(trackAry);
 
 	zUndoSize = undoList.size();
 //!Wenn Sprühknopf gedrückt und tracker ausgeschaltet ist
 	if(!tracker)
 	{
-		wall->setX(coordAdjuMouse(true));
-		wall->setY(coordAdjuMouse(false));
+		wall->setX(trackAry[0]);
+		wall->setY(trackAry[1]);
 		if(pressed)
 		{
 			
-			lineList.front().myX.push_back(coordAdjuMouse(true));
+			lineList.front().myX.push_back(trackAry[0]);
 			//std::cout<<"x="<<coordAdjuMouse(true)<<std::endl;
-			lineList.front().myY.push_back(coordAdjuMouse(false));
+			lineList.front().myY.push_back(trackAry[1]);
 			//std::cout<<"y="<<coordAdjuMouse(false)<<std::endl;
-			lineList.front().myZ.push_back(wZ);		// Z-Wert-Radius fix für Analog //new
+			lineList.front().myZ.push_back(trackAry[2]);		// Z-Wert-Radius fix für Analog //new
 			lineList.front().myUndoSizeZ = zUndoSize;	// Listenposition Z-Ebene	//new
-			//std::cout << "zTmp ist: " << zUndoSize << std::endl;
 		}
 		lineList.front().notify();
 		//"Wisch Geste" 
@@ -198,44 +199,31 @@ void GraffitiEngine::handleTracker(void* userData, const vrpn_TRACKERCB t)
 	wall->received=true;
 	if(tracker)
 	{
-/*		trackAry[0] = t.pos[0];
-		trackAry[1] = t.pos[1];
-		trackAry[2] = t.pos[2];
-		wX = trackAry[0];
-		wY = trackAry[1];
-		wZ = trackAry[2];		*/
-
-		if(t.sensor == 14)//Rechte Hand
-		{
 			trackAry[0] = t.pos[0];
 			trackAry[1] = t.pos[1];
 			trackAry[2] = t.pos[2];
-			wX = trackAry[0];
-			wY = trackAry[1];
-			wZ = trackAry[2];
+			coordAdju(trackAry);
+		if(t.sensor == 14)//Rechte Hand
+		{
 			zUndoSize = undoList.size();
-			wall->setX(coordAdjuTracker(true));
-			wall->setY(coordAdjuTracker(false));
+			wall->setX(trackAry[0]);
+			wall->setY(trackAry[1]);
+			
 		}
 		
 		if(pressed && t.sensor == 14)//Spray gedrückt und linke Hand
 		{
-			trackAry[0] = t.pos[0];
-			trackAry[1] = t.pos[1];
-			trackAry[2] = t.pos[2];
-			wX = trackAry[0];
-			wY = trackAry[1];
-			wZ = trackAry[2];
+
 			zUndoSize = undoList.size();
 			//line->myX.push_back(coordAdjuTracker(true));
 			//line->myY.push_back(coordAdjuTracker(false));	
 
-			lineList.front().myX.push_back(coordAdjuTracker(true));
-			lineList.front().myY.push_back(coordAdjuTracker(false));
-			lineList.front().myZ.push_back(wZ);		//new
+			lineList.front().myX.push_back(trackAry[0]);
+			lineList.front().myY.push_back(trackAry[1]);
+			lineList.front().myZ.push_back(trackAry[2]);		//new
 			lineList.front().myUndoSizeZ = zUndoSize;
 		std::cout<<"----------------------------"<<std::endl;
-std::cout<<wZ<<std::endl;
+		std::cout<<wZ<<std::endl;
 		std::cout<<"----------------------------"<<std::endl;
 	
 		}
@@ -268,14 +256,12 @@ std::cout<<wZ<<std::endl;
 void GraffitiEngine::nextTextureGestureMouse(void)
 {
 	string s;
+	xGeste = trackAry[0];
+	yGeste = trackAry[1];
 	if(tracker){
-	xGeste = coordAdjuTracker(true);
-	yGeste = coordAdjuTracker(false);
 	s = "Hand";
 	}
 	else{	
-	xGeste = coordAdjuMouse(true);
-	yGeste = coordAdjuMouse(false);
 	s = "Maus";
 	}
 	if((yGeste >= 0.5f && yGeste <= 3.0f) && !pressed)
@@ -321,7 +307,7 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 
 		if(fabs (trackAryLeft[1] - trackAryLeftShoulder[1]) <= 0.14f) //absoluter Betrag von yLinkeHand - yLinkeSchulter mit einer erlaubten Varianz von 0.15f
 		{
-			xGeste = coordAdjuTracker(true);
+			xGeste = trackAry[0];
 			//yGeste = coordAdjuTracker(false);
 			s = "Hand";
 			/*std::cout<<"----------------------------"<<std::endl;
@@ -346,13 +332,11 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 					{
 						wall->nextTexture();
 						delta = 0.0f;
-						//temp = 0.0f;
 						leftHand = false;
 					}else if(delta <= -2.25f)
 					{
 						wall->previousTexture();
 						delta = 0.0f;
-						//temp = 0.0f;
 						leftHand = false;
 					}
 				}
@@ -372,10 +356,15 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 //! Anzahl der gemalten PolyLines ausgeben
 void GraffitiEngine::printLists()
 {
-	std::cout <<"Anzahl PolyLines: "<< lineList.size()-1<<std::endl;
+	std::cout <<"Anzahl der Lines: "<< lineList.size()-1<<std::endl;
+	for(int i=0; i<lineList.size();i++)
+	{
+		std::cout<<"\tLine"<<i<<" Länge:"<<lineList.at(i).getMyX().size()<<" zUndoSize:"<<lineList.at(i).getMyUndoSizeZ()<<std::endl;
+	}
 	std::cout <<"Anzahl Stamps: "<< stampList.size()<<std::endl;
 	std::cout <<"Anzahl Circles: "<< circleList.size()<<std::endl;
 	std::cout <<"Insgesamt: "<< undoList.size() <<std::endl;
+	std::cout <<"undosize Var:"<< lineList.at(0).getMyUndoSizeZ() <<std::endl;
 }
 
 //!Tastatur handler von GLUT-Engine(Localhost)
@@ -495,12 +484,7 @@ void GraffitiEngine::previousColor()
 void GraffitiEngine::addStamp()
 {	
 	Stamp *s;
-	if(!tracker){
-		s = new Stamp(coordAdjuMouse(true), coordAdjuMouse(false));
-	}
-	else {
-		s = new Stamp(coordAdjuTracker(true), coordAdjuTracker(false));
-	}
+	s = new Stamp(trackAry[0], trackAry[1]);
 
 	stampList.push_back(*s);
 	undoList.push_back(1);
@@ -508,11 +492,7 @@ void GraffitiEngine::addStamp()
 void GraffitiEngine::addCircle()
 {	
 	Circle *c;
-	if(!tracker)
-		// z-Wert eingebaut undoList.size() +1 um an die tatsächliche Position zu zeichnen
-	   c = new Circle(0.5f, coordAdjuMouse(true),coordAdjuMouse(false),(float) ((zUndoSize +1)), colorIndex);
-	else
-	   c = new Circle(0.5f, coordAdjuTracker(true),coordAdjuTracker(false), (float) (zUndoSize +1), colorIndex);
+	   c = new Circle(0.5f, trackAry[0], trackAry[1], (float) (zUndoSize +1), colorIndex);
 	
 	circleList.push_back(*c);
 	undoList.push_back(2);
@@ -533,6 +513,7 @@ void GraffitiEngine::sprayReleased()
 	lineList.front().myZ.clear();	//new
 	undoList.push_back(0);
 	pressed = false;
+	printLists();
 	
 }
 
@@ -557,28 +538,24 @@ void GraffitiEngine::undo(void)
 	}
 }
 //!Umrechnen der Welt und Monitorkoordinate im Bezug auf das Koordinatensystem der Anwendung
-float GraffitiEngine::coordAdjuMouse(bool chooseVariable)
+void GraffitiEngine::coordAdjuMouse(float coords[])
 {
-	if(chooseVariable)
-		return xMin+wX*deltaX;
-	else
-		return (yMin+(1-wY)*deltaY);
+	float oldX = coords[0];
+	float oldY = coords[1];
+	coords[0] = xMin + oldX*deltaX;
+	coords[1] = yMin +(1-oldY)*deltaY;
  }
 
-float GraffitiEngine::coordAdjuTracker(bool chooseVariable)
-{
-	if(chooseVariable)
-		return (-4.0f + ((wX+1.13f)/2.26f) * 8.0f); //Abbildung[-1.13, 1.13] -> [-4, 4] 
-	else
-	{
-		//std::cout << "Wert " << -3.0f + ((yAnNeigungswinkelAnpassen()+0.65f)/1.7f) * 6.0f << std::endl;
-		return (-3.0f + ((yAnNeigungswinkelAnpassen()+0.65f)/1.7f) * 6.0f); //Abbildung [-0.65, 0.65]->[-3, 3]
-	}
-}
 
-float GraffitiEngine::yAnNeigungswinkelAnpassen(void)
+void GraffitiEngine::coordAdju(float coord[])
 {
-		return ((cosPitch*wY + sinPitch*wZ) -0.82f);	
+	//	return ((cosPitch*wY + sinPitch*wZ) -0.82f);
+	float  oldX = coord[0];
+	float  oldY = coord[1];
+	float  oldZ = coord[2];
+	coord[0] = (-4.0f + ((oldX+1.13f)/2.26f) *8.0f);
+	coord[1] = ((-3.0f + ((cosPitch*oldY + sinPitch *oldZ)+ 0.65)/ 1.7f) *6.0f);
+	coord[2] = -sinPitch *oldY + cosPitch *oldZ;
 }
 
 

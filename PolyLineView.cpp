@@ -34,12 +34,12 @@ glPolygonMode(GL_FRONT, GL_FILL);
 
 	for(int i = 0;i<line.size();i++)
 	{
-	zd = (float) (line.at(i).getMyUndoSizeZ()*0.001f);	// z-Ebenen der Linien innerhalb der Linienliste
-
-	zdO = (float) (0.01f * line.at(i).getMyUndoSizeZ());
-	if ( i==0 ) 
-		{zE=zdO;} 
-	else {zE=zd;}					
+		if (i == 0) 
+			{zE=2;} 
+		else 
+		{
+			zE= (float) (line.at(i).getMyUndoSizeZ()*0.02f);
+		}				
 
 		glColor3f(line.at(i).getActiveColor()->getRed(),
 		  line.at(i).getActiveColor()->getGreen(), 
