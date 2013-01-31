@@ -3,6 +3,7 @@
 
 #include <vlgGLObserver.h>
 #include "Line.h"
+#include "vlgShaderHandler.h"
 
 //! View mit einer OpenGL-Ausgabe
 class CircleLineView : public vlgGLObserver

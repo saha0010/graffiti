@@ -448,18 +448,25 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 int GraffitiEngine::incColorIndex(int c)
 {
 	
-	if(c >= 5)
-		return 0;
-	else 
-		//std::cout<<"incNCI(int c): "<<(c+1)<<std::endl;
+	if(c >= 7){
+		std::cout<<"setting colorIndex from "<<c<<" to 0"<<std::endl;
+		return 0;	
+	}
+	else {
+		std::cout<<"setting colorIndex from "<<c<<" to "<<(c+1)<<std::endl;
 		return ++c;
+	}
 }
 int GraffitiEngine::decColorIndex(int c)
 {
-	if(c <= 0)
-		return 5;
-	else
+	if(c <= 0){
+		std::cout<<"setting colorIndex from "<<c<<" to 7"<<std::endl;
+		return 7;
+	}
+	else{
+		std::cout<<"setting colorIndex from "<<c<<" to "<<(c-1)<<std::endl;
 		return --c;
+	}
 }
 //!Bild verwerfen
 void GraffitiEngine::clearAll(void)
@@ -484,7 +491,7 @@ void GraffitiEngine::previousColor()
 void GraffitiEngine::addStamp()
 {	
 	Stamp *s;
-	s = new Stamp(trackAry[0], trackAry[1]);
+	s = new Stamp(trackAry[0], trackAry[1], (float) (zUndoSize +1));
 
 	stampList.push_back(*s);
 	undoList.push_back(1);

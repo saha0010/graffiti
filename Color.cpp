@@ -9,20 +9,28 @@ Color::Color(void)
 	colorList[3] = new vlgColor(1.0f, 1.0f, 1.0f); //white
 	colorList[4] = new vlgColor(0.0f, 0.0f, 0.0f); //black
 	colorList[5] = new vlgColor(1.0f, 1.0f, 0.0f); //yellow
+
+	colorList[6] = new vlgColor(1.0f, 0.48f, 0.0f);	   //orange
+	colorList[7] = new vlgColor(0.47f, 0.0f,  1.0f);//purple
+
 }
 
 Color::Color(int i)
 {
-	std::cout << "Color(i= "<<i<<")" << std::endl;
 	Color();
 	setActiveColorByIndex(i);
 }
-void Color::setActiveColorByIndex(int i)//! Range 0-5
+void Color::setActiveColorByIndex(int i)//! Range 0-7
 	{
 //std::cout << "setActiveColorByIndex(i= "<<i<<")" << std::endl;
-		if(i > 5 || i < 0)
+		if(i > 7 || i < 0)
 			i=0;
 		activeColor = colorList[i];
+		std::cout << "color: " << colorList[i]<<std::endl;
+
+			std::cout<<"color red:"<<(float)activeColor->getRed()<<std::endl;
+			std::cout<<"color green:"<<(float)activeColor->getGreen()<<std::endl;
+			std::cout<<"color blue:"<<(float)activeColor->getBlue()<<std::endl;
 		notify();
 	}
 

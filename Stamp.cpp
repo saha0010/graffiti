@@ -1,10 +1,11 @@
 #include "Stamp.h"
 
-Stamp::Stamp(float x, float y):status(0),stampIndex(0),anzahlStamps(1), one() 							
+Stamp::Stamp(float x, float y, float z):status(0),stampIndex(0),anzahlStamps(1), one() 							
 {
 	std::cout<<"Stamp(float "<<x<<", float "<<y<<")"<<std::endl;
 	setX(x);
 	setY(y);
+	setZ(z);
 	setWidth(0.57142f);
 	setHeight(0.57142f);
 	createTextureMap();

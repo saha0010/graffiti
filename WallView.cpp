@@ -86,9 +86,9 @@ void WallView::chosenColor(void)
 	float transY = -2.9f;
 
 	glBegin(GL_POLYGON);
-	glColor3f(wall->getActiveColor()->getRed(),
-		wall->getActiveColor()->getGreen(),
-		wall->getActiveColor()->getBlue());
+	glColor3f(((float)wall->getActiveColor()->getRed())/255,
+		      ((float)wall->getActiveColor()->getGreen())/255,
+			  ((float)wall->getActiveColor()->getBlue())/255);
 
 		glVertex2f(0+transX, 0+transY);
 		glVertex2f(0.6f+transX, 0+transY);
@@ -104,9 +104,9 @@ void WallView::visionMode(void)
 	glBegin(GL_POLYGON);
 	glEnable(GL_LINE_SMOOTH);
 	glLineWidth(0.3f);
-		glColor3f(wall->getActiveColor()->getRed(),
-			wall->getActiveColor()->getGreen(),
-			wall->getActiveColor()->getBlue());
+	glColor3f(((float)wall->getActiveColor()->getRed())/255,
+		      ((float)wall->getActiveColor()->getGreen())/255,
+			  ((float)wall->getActiveColor()->getBlue())/255);
 		
 	
 		for(int i = 0; i<360;i++)

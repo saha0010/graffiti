@@ -15,7 +15,7 @@ public:
 	vlgColor* getActiveColor(void);	
 
 private:
-	vlgColor *colorList[6];	//!< Farbliste
+	vlgColor *colorList[8];	//!< Farbliste
 	vlgColor *activeColor;	//!< aktive Farbe
 	
 };

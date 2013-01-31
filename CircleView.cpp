@@ -41,7 +41,7 @@ void CircleView::draw(void)
 	    for (int i=0; i<n; i++)	
 		glVertex3f(circles[j].getX() + circles[j].getRadius()*cos(static_cast<float>(i*h)), 
 			       circles[j].getY() + circles[j].getRadius()*sin(static_cast<float>(i*h)),
-				   circles[j].getZ()*0.001f);
+				   circles[j].getZ()*0.02f);
 		glEnd();
 	}
 }

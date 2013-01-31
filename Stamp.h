@@ -17,7 +17,7 @@ public:
 		* Rechteck mit Texture bzw. das Bitmap angehängt werden
 		* soll.
 	*/
-	Stamp(float x=0, float y=0);
+	Stamp(float x=0, float y=0, float z=0);
 	
 	//! Funktion das nächste Bitmap zu wählen
 	/*!
