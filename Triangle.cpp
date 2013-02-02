@@ -1,9 +1,10 @@
 #include "Triangle.h"
 
-Triangle::Triangle(float x, float y, float width, float height, int i):width(width),height(height)
+Triangle::Triangle(float x, float y, float z, float s, int i):size(s)
 {
 	setX(x);
 	setY(y);
+	setZ(z);
 	setFilled(true);
 	setActiveColorByIndex(i);
 }
@@ -12,8 +13,5 @@ Triangle::Triangle(float x, float y, float width, float height, int i):width(wid
 Triangle::~Triangle(void)
 {
 }
-
-float Triangle::getWidth()
-{return width;}
-float Triangle::getHeight()
-{return height;}
+void Triangle::setSize(float s){size=s;}
+float Triangle::getSize(void){return (float)size;}

@@ -28,8 +28,8 @@ bool CircleLineView::update(const vlgSubject &changedSubject)
 	//! Ausgabe der momentan gemalten Line 
 void CircleLineView::draw(void)
 {	float h =  2.0f*static_cast<float>(M_PI)/static_cast<float>(32);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	for(int i = 0;i<line.size();i++)
 	{
@@ -41,10 +41,9 @@ void CircleLineView::draw(void)
 		}		
 
 		
-			glColor4f(((float)line.at(i).getActiveColor()->getRed())/255,
+			glColor3f(((float)line.at(i).getActiveColor()->getRed())/255,
 					  ((float)line.at(i).getActiveColor()->getGreen())/255, 
-					  ((float)line.at(i).getActiveColor()->getBlue())/255,
-					  0.5f);
+					  ((float)line.at(i).getActiveColor()->getBlue())/255);
 			
 			
 	

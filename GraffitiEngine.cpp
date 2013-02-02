@@ -6,7 +6,7 @@
 
 // Default-Konstruktor
 GraffitiEngine::GraffitiEngine(void) :  glPolyLineObs(lineList),
-										glStampObs(stampList), glCircleObs(circleList),
+										glStampObs(stampList), glCircleObs(circleList), glTriangleObs(triangleList),
 										glCircleLineObs(lineList),
 										t(true),
                                         pressed(false), tracker(false),
@@ -36,8 +36,9 @@ lineList.push_back(*tLine);
 //! Konstante-Werte sin und cos von Neigungswinkel der Kinect
 	sinPitch = sin(vlgDeg2Rad(pitch));
 	cosPitch = cos(vlgDeg2Rad(pitch));
-	
 
+
+	colorCount = tLine->getColorCount();
 }
 
 //!OpenGL Initialisierung 
@@ -71,6 +72,8 @@ void GraffitiEngine::attachObserver(void)
     attachGLObserver(&glStampObs);
 	std::cout << "attachGLObserver(&glCircleObs)" << std::endl;
     attachGLObserver(&glCircleObs);
+	std::cout << "attachGLObserver(&glTriangleObs)" << std::endl;
+	attachGLObserver(&glTriangleObs);
 }
 
 
@@ -109,11 +112,11 @@ void GraffitiEngine::handleAnalog(void *userData, const vrpn_ANALOGCB a)
 		{
 			
 			lineList.front().myX.push_back(trackAry[0]);
-			//std::cout<<"x="<<coordAdjuMouse(true)<<std::endl;
+
 			lineList.front().myY.push_back(trackAry[1]);
-			//std::cout<<"y="<<coordAdjuMouse(false)<<std::endl;
-			lineList.front().myZ.push_back(trackAry[2]);		// Z-Wert-Radius fix für Analog //new
-			lineList.front().myUndoSizeZ = zUndoSize;	// Listenposition Z-Ebene	//new
+
+			lineList.front().myZ.push_back(trackAry[2]);	
+			lineList.front().myUndoSizeZ = zUndoSize;			
 		}
 		lineList.front().notify();
 		//"Wisch Geste" 
@@ -363,6 +366,7 @@ void GraffitiEngine::printLists()
 	}
 	std::cout <<"Anzahl Stamps: "<< stampList.size()<<std::endl;
 	std::cout <<"Anzahl Circles: "<< circleList.size()<<std::endl;
+	std::cout <<"Anzahl Triangles: "<< triangleList.size()<<std::endl;
 	std::cout <<"Insgesamt: "<< undoList.size() <<std::endl;
 	std::cout <<"undosize Var:"<< lineList.at(0).getMyUndoSizeZ() <<std::endl;
 }
@@ -431,6 +435,10 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 	case'k':
 		addCircle();
 		break;
+	case 'f':
+		addTriangle();
+		
+		break;
 	case'r':
 		savePicture();
 		break;
@@ -448,7 +456,7 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 int GraffitiEngine::incColorIndex(int c)
 {
 	
-	if(c >= 7){
+	if(c >= colorCount-1){
 		std::cout<<"setting colorIndex from "<<c<<" to 0"<<std::endl;
 		return 0;	
 	}
@@ -460,8 +468,8 @@ int GraffitiEngine::incColorIndex(int c)
 int GraffitiEngine::decColorIndex(int c)
 {
 	if(c <= 0){
-		std::cout<<"setting colorIndex from "<<c<<" to 7"<<std::endl;
-		return 7;
+		std::cout<<"setting colorIndex from "<<c<<" to "<<colorCount-1<<std::endl;
+		return colorCount-1;
 	}
 	else{
 		std::cout<<"setting colorIndex from "<<c<<" to "<<(c-1)<<std::endl;
@@ -475,6 +483,7 @@ void GraffitiEngine::clearAll(void)
 	lineList.push_back(*tLine);
 	stampList.clear();
 	circleList.clear();
+	triangleList.clear();
 	undoList.clear();
 }
 void GraffitiEngine::nextColor()
@@ -496,13 +505,25 @@ void GraffitiEngine::addStamp()
 	stampList.push_back(*s);
 	undoList.push_back(1);
 }
+
 void GraffitiEngine::addCircle()
 {	
 	Circle *c;
 	   c = new Circle(0.5f, trackAry[0], trackAry[1], (float) (zUndoSize +1), colorIndex);
 	
 	circleList.push_back(*c);
+	  
 	undoList.push_back(2);
+}
+void GraffitiEngine::addTriangle()
+{
+	Triangle *t;
+		t = new Triangle(trackAry[0], trackAry[1], (float)(zUndoSize +1), trackAry[2],colorIndex);
+
+		triangleList.push_back(*t);
+
+	undoList.push_back(3);
+	std::cout<<"Added Triangle at:"<<t->getX()<<", "<<t->getY()<<", "<<t->getZ()<<", "<<t->getSize() <<std::endl;
 }
 
 void GraffitiEngine::sprayPressed()
@@ -536,8 +557,11 @@ void GraffitiEngine::undo(void)
 		case 1:
 			stampList.pop_back();
 			break;
-		case 2:
+		case 2:		
 			circleList.pop_back();
+			break;
+		case 3:
+			triangleList.pop_back();
 			break;
 		}
 		undoList.pop_back();

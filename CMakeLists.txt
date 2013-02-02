@@ -39,6 +39,7 @@ add_executable (Graffiti graffiti.cpp GraffitiEngine.cpp GraffitiEngine.h
 				Shape.h Shape.cpp
 				Rectangle.h Rectangle.cpp
 				Triangle.h Triangle.cpp
+				TriangleView.h TriangleView.cpp
 				Line.h Line.cpp
 				)
 TARGET_LINK_LIBRARIES(Graffiti  vlgGlut vlg vlgVRPN ${GLUT_LIB} ${GLU_LIB} ${GL_LIB} ${VRPN_LIB} vrpn)

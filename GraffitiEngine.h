@@ -3,7 +3,7 @@
 
 
 #include "PolyLineView.h"
-
+#include "TriangleView.h"
 #include "CircleLineView.h"
 
 /*! Observer für den Hintergrund*/
@@ -18,6 +18,8 @@
 #include <vlgVRPNEngine.h>
 #include <vector>
 #include <vlgUtil.h>
+
+#include "Color.h"
 
 //! Klasse einer OpenGL-Anwendung mit VRPN-Support
 class GraffitiEngine : public vlgVRPNEngine
@@ -50,24 +52,28 @@ private:
 	std::vector<Stamp> stampList;
 	//!Liste der gemalten Kreise
 	std::vector<Circle> circleList;
-	
+	//!Liste der gemalten Dreiecke
+	std::vector<Triangle> triangleList;
+
 	Line *tLine;
 
 	//!Zeiger auf den Hintergrund
 	Wall *wall;
 
-	//!Observer für alle gezeichneten PolyLines(OpenGL Ausgabe)
+	//!Observer für die Linien Ausgabe als Polylines
 	PolyLineView glPolyLineObs;
 
 	//!Observer für die Stamps(Bitmaps drauf kleben)
 	StampView glStampObs;
 	//!Observer für Kreise
 	CircleView glCircleObs;
+	//!Observer für Dreiecke
+	TriangleView glTriangleObs;
 	
-	//!Observer für die im Moment gezeichnet werdende PolyLine (OpenGL Ausgabe) 
+	//!Observer für die im Ausgabe als Kreise
 	CircleLineView glCircleLineObs;	
 	
-	//!Observer für den Hintergrund
+	//!Observer für den Hintergrund und Interface Elemente
 	WallView glWallObs;
 
 	
@@ -98,6 +104,7 @@ private:
 	
 	int colorIndex;	//!< Variable um aktuelle Farben zu setzen
 	
+	int colorCount; //!< Anzahl der Farben der Klasse Color
 	
 	float trackAry[3];	//!< Array um einkommende Tracker-Werte für rechte Hand zuspeichern
 	float trackAryLeft[2];	//!< Array um einkommende Tracker-Werte für linke Hand zuspeichern
@@ -250,6 +257,11 @@ private:
 		* \sa coordAdjuTracker(), coordAdjuMouse(), addCircle()
 	*/
 	void addCircle(void);
+
+	//! Funktion um ein Dreieck zu erstellen
+	void addTriangle(void);
+
+
 
 	//! Funktion um ein Bitmap anzuhängen
 		/*!
