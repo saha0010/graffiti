@@ -2,8 +2,11 @@
 #define CIRCLELINEVIEW
 
 #include <vlgGLObserver.h>
+#include <vlgShaderHandler.h>
+#include <string>
+
 #include "Line.h"
-#include "vlgShaderHandler.h"
+
 
 //! View mit einer OpenGL-Ausgabe
 class CircleLineView : public vlgGLObserver
@@ -13,7 +16,7 @@ public:
 
 	CircleLineView(std::vector<Line> &l);
 
-	//! Grafische Ausgabe, wird anstatt Display() aufgerufen
+	//! Grafische Ausgabe, wird in der display()-Funktion des Kerns aufgerufen
 	/*!
 		* Die draw-Funktion ist für das betrachten
 		* der aktuell gemalten Linie zuständig. Er prüft welcher \a mode 
@@ -22,11 +25,22 @@ public:
 		* RGB-Anteilen der aktiven Farbe.
 	*/
 	virtual void draw(void);
+    //! Initialisierung des GLSL Shader-Handlers
+	/*!
+	 * Setzt einen gültigen OpenGL-Kontext voraus; aufrufen in Anwendungsklasse::initContext() !!!!!
+	 */
+	void initShader(void);
 
 	//! Update, Änderungen werden angepasst
 	virtual bool update(const vlgSubject &changedSubject);
 
 private:
+	// Zeiger auf Shader-Handler
+	vlgShaderHandler *shader;
+	//! Error-Code des Shader-Handlers
+	short errorCode;
+	//! Name des Vertex-Shaders
+	std::string vertexShader;
 	//! Zeiger auf das Subject, das wir beobachten
 	std::vector<Line> &line;
 

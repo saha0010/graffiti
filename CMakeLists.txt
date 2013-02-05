@@ -20,6 +20,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/textures/wand_backstein_3.bmp ${CMAKE
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/textures/credits.jpg ${CMAKE_CURRENT_BINARY_DIR}/textures COPYONLY)
 make_directory(${CMAKE_CURRENT_BINARY_DIR}/stamps)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/stamps/fhlogo.bmp ${CMAKE_CURRENT_BINARY_DIR}/stamps COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/yellow.vsh ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 
 make_directory(${CMAKE_CURRENT_BINARY_DIR}/savedPictures)
 

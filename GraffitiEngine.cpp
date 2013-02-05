@@ -60,6 +60,9 @@ void GraffitiEngine::initContext(void)
 	
 	attachObserver();
 	VRPNGeraete();
+
+	// init für den Shader der Klasse glCircleLineObs
+	glCircleLineObs.initShader();
 }
 //!OpenGL-Observer hinzufuegen (Aus InitConext auslagern)
 void GraffitiEngine::attachObserver(void)
