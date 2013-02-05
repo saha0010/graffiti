@@ -4,18 +4,17 @@
 // $Date$
 // --------------------------------------------------------------------------
 // Fragment Shader "yellow"
+
+uniform vec3  color;
 void main(void)
 {
-    float x =  gl_FragCoord.x;
-    float y =  gl_FragCoord.y;
 
-    float xTemp = mod(x,2);
-    float yTemp = mod(y,2);
+    int x =  int(gl_FragCoord.x);
+    int y =  int(gl_FragCoord.y);
 
-    if ((xTemp == (float)1.0) || (yTemp == (float)1.0))
-    {
-        discard;    
-        
-    }
+    
+if ( (x % 2 == 1) || ( y % 2 == 1 ) && !( x % 2 == 1 &&  y % 2 == 1))
+    discard;
+gl_FragColor = vec4(color[0],color[1],color[2],0.5);
 
 }
