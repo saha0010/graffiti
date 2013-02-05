@@ -103,7 +103,7 @@ void WallView::visionMode(void)
 	float h = 2.0f*static_cast<float>(M_PI)/static_cast<float>(18);
 	glBegin(GL_POLYGON);
 	glEnable(GL_LINE_SMOOTH);
-	glLineWidth(0.3f);
+	//glLineWidth(0.3f);
 	glColor3f(((float)wall->getActiveColor()->getRed())/255,
 		      ((float)wall->getActiveColor()->getGreen())/255,
 			  ((float)wall->getActiveColor()->getBlue())/255);

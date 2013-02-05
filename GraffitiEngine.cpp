@@ -442,6 +442,12 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 	case'h':
 		addStamp();
 		break;
+	case'b':
+		if(circleLineView.getBlending())
+			circleLineView.setBlending(false);
+		else
+			circleLineView.setBlending(true);
+		break;
 	case'z':
 		undo();
 		break;

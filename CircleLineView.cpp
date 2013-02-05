@@ -9,7 +9,7 @@
 #endif
 #include <GL/gl.h>
 
-CircleLineView::CircleLineView(std::vector<Line> &l) : line(l), shader(vlgShaderHandler::Instance()), errorCode(0), vertexShader("yellow.vsh")
+CircleLineView::CircleLineView(std::vector<Line> &l) : line(l), shader(vlgShaderHandler::Instance()), errorCode(0), vertexShader("yellow.vsh"),blending(false)
 {
 	//std::cout << "PolyLineView(vector<PolyLine> &l)" << std::endl;
 	for(int i = 0; i<line.size();i++)
@@ -54,9 +54,12 @@ bool CircleLineView::update(const vlgSubject &changedSubject)
 void CircleLineView::draw(void)
 {	
 	float h =  2.0f*static_cast<float>(M_PI)/static_cast<float>(32);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	if(blending)
+	{
+		glEnable(GL_BLEND);
+		glEnable(GL_POLYGON_SMOOTH);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA); // cool Effect;
+	}
     // Shader-Programm aktivieren
 	if (errorCode == 0)
              shader->programOn(); 
@@ -77,7 +80,6 @@ void CircleLineView::draw(void)
 								  (float)line.at(i).getActiveColor()->getGreen()/255,
 								  (float)line.at(i).getActiveColor()->getBlue()/255);
 			}
-
 			/*glColor3f(((float)line.at(i).getActiveColor()->getRed())/255,
 					  ((float)line.at(i).getActiveColor()->getGreen())/255, 
 					  ((float)line.at(i).getActiveColor()->getBlue())/255);*/
@@ -105,4 +107,7 @@ void CircleLineView::draw(void)
     shader->programOff();
 }
 
-
+void CircleLineView::setBlending(bool b)
+{ blending = b;}
+bool CircleLineView::getBlending(void)
+	{return blending;}

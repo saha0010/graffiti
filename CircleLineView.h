@@ -34,7 +34,10 @@ public:
 
 	//! Update, Änderungen werden angepasst
 	virtual bool update(const vlgSubject &changedSubject);
-
+	//! Setter Methode für Membervariable "blending"
+	void setBlending(bool b);
+	//! Getter Methode für Membervariable "blendind"
+	bool getBlending(void);
 private:
 	//! Zeiger auf Shader-Handler
 	vlgShaderHandler *shader;
@@ -52,6 +55,9 @@ private:
 	std::string vertexShader;
 	//! Zeiger auf das Subject, das wir beobachten
 	std::vector<Line> &line;
+
+	//! Varibale um Blending an oder aus zuschalten.
+	bool blending;
 
 	float zd;
 	float zdO;
