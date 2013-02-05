@@ -60,25 +60,28 @@ private:
 	//!Zeiger auf den Hintergrund
 	Wall *wall;
 
-	//!Observer für die Linien Ausgabe als Polylines
-	PolyLineView glPolyLineObs;
-
-	//!Observer für die Stamps(Bitmaps drauf kleben)
-	StampView glStampObs;
-	//!Observer für Kreise
-	CircleView glCircleObs;
-	//!Observer für Dreiecke
-	TriangleView glTriangleObs;
-	
-	//!Observer für die im Ausgabe als Kreise
-	CircleLineView glCircleLineObs;	
-	
-	//!Observer für den Hintergrund und Interface Elemente
-	WallView glWallObs;
+	//!View für die Linien Ausgabe als Polylines
+	PolyLineView polyLineView;
+	//!View für die Stamps(Bitmaps drauf kleben)
+	StampView stampView;
+	//!View für Kreise
+	CircleView circleView;
+	//!View für Dreiecke
+	TriangleView triangleView;	
+	//!View für die im Ausgabe als Kreise
+	CircleLineView circleLineView;		
+	//!View für den Hintergrund und Interface Elemente
+	WallView wallView;
 
 	
 	bool pressed; //!< Variable um zu erkennen ob "Spühtaste gedrückt ist"
-	bool t;		//!< Variable umn zu erknnen mit welcher View die Linien angezeigt werden sollen t = true -> CircleLineView else PolyLineView
+	
+	//!< Variable umn zu erknnen mit welcher View die Linien angezeigt werden sollen.
+	/*!
+	 *	0 = CircleLineView, 
+	 *	1 = PolyLineView
+	 */
+	int whichView;	
 	bool tracker; //!< Varibale um zu erkennen ob Tracker oder Maus benutzt wird
 
 	// Einkommende Werte der Maus bzw. des Trackers	

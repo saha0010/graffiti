@@ -24,12 +24,25 @@ void CircleLineView::initShader(void)
 {
 	    // Ausgaben des Shader-Compilers und Linkers auf die Konsole
 	    shader->verboseOn();
-	    shader->setVertexShaderSource(vertexShader);
-	    shader->vertexShaderOn();
+		std::cout<<glGetString(GL_SHADING_LANGUAGE_VERSION)<<std::endl;
+	    shader->setFragmentShaderSource(vertexShader);
+		shader->fragmentShaderOn();
 	    errorCode = shader->installProgram();
+		
 	    if (errorCode != 0)
 			std::cerr << "Fehler beim Installieren des Shader Programs" <<std::endl; 
+
+		// Uniform-Variable verbinden
+		if (errorCode == 0)
+		{
+			uniform = new vlgShaderUniform(shader->getProgram(), "color");
+			shader->programOn();
+			uniform->set("color", 1.0f, 0.0f, 0.0f);
+		}
+
+
 }
+
 
 bool CircleLineView::update(const vlgSubject &changedSubject)
 {
@@ -41,12 +54,14 @@ bool CircleLineView::update(const vlgSubject &changedSubject)
 void CircleLineView::draw(void)
 {	
 	float h =  2.0f*static_cast<float>(M_PI)/static_cast<float>(32);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Shader-Programm aktivieren
-    if (errorCode == 0)
+	if (errorCode == 0)
              shader->programOn(); 
+
+
 	for(int i = 0;i<line.size();i++)
 	{
 		if (i == 0) 
@@ -55,11 +70,18 @@ void CircleLineView::draw(void)
 		{
 			zE= (float) (line.at(i).getMyUndoSizeZ()*0.02f);
 		}		
+		//Shader die Farbe übergeben
+		if (errorCode == 0)
+			{
+			uniform->set("color", (float)line.at(i).getActiveColor()->getRed()/255,
+								  (float)line.at(i).getActiveColor()->getGreen()/255,
+								  (float)line.at(i).getActiveColor()->getBlue()/255);
+			}
 
-		
-			glColor3f(((float)line.at(i).getActiveColor()->getRed())/255,
+			/*glColor3f(((float)line.at(i).getActiveColor()->getRed())/255,
 					  ((float)line.at(i).getActiveColor()->getGreen())/255, 
-					  ((float)line.at(i).getActiveColor()->getBlue())/255);
+					  ((float)line.at(i).getActiveColor()->getBlue())/255);*/
+			
 			
 			
 	

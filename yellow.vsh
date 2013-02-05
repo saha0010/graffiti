@@ -1,12 +1,21 @@
 // --------------------------------------------------------------------------
-// $File: //depot/vlg/Demos/GLSL/firstVertex/yellow.vsh $
-// $Revision: #1 $
-// $Date: 2012/02/09 $
+// $File$
+// $Revision$
+// $Date$
 // --------------------------------------------------------------------------
-// Vertex Shader "yellow"
-// ftransform == fixed function pipeline
+// Fragment Shader "yellow"
 void main(void)
 {
-   gl_FrontColor = vec4(1.0, 1.0, 0.0, 1.0);
-   gl_Position = ftransform();
+    float x =  gl_FragCoord.x;
+    float y =  gl_FragCoord.y;
+
+    float xTemp = mod(x,2);
+    float yTemp = mod(y,2);
+
+    if ((xTemp == (float)1.0) || (yTemp == (float)1.0))
+    {
+        discard;    
+        
+    }
+
 }

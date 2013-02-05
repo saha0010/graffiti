@@ -3,6 +3,7 @@
 
 #include <vlgGLObserver.h>
 #include <vlgShaderHandler.h>
+#include <vlgShaderUniform.h>
 #include <string>
 
 #include "Line.h"
@@ -35,8 +36,16 @@ public:
 	virtual bool update(const vlgSubject &changedSubject);
 
 private:
-	// Zeiger auf Shader-Handler
+	//! Zeiger auf Shader-Handler
 	vlgShaderHandler *shader;
+	//! Zeiger Uniform-Varibalen
+	/*!
+	 *	Übergibt die aktive Farbe an den Shader weiter.
+	 */
+	vlgShaderUniform *uniform;
+	//! Methode um Uniform Variable zu setztn
+	void setUniforms(Line l);
+
 	//! Error-Code des Shader-Handlers
 	short errorCode;
 	//! Name des Vertex-Shaders

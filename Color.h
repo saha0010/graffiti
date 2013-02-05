@@ -18,9 +18,10 @@ public:
 	int getColorCount(void);
 
 private:
-	//vlgColor *colorList[8];	//!< Farbliste
-	vlgColor *activeColor;	//!< aktive Farbe
+	//!< aktive Farbe
+	vlgColor *activeColor;	
 	
+	//!< Farbliste
 	std::vector<vlgColor*> colorList;
 
 };

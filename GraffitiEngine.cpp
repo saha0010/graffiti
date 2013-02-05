@@ -5,10 +5,10 @@
 #include <cmath>
 
 // Default-Konstruktor
-GraffitiEngine::GraffitiEngine(void) :  glPolyLineObs(lineList),
-										glStampObs(stampList), glCircleObs(circleList), glTriangleObs(triangleList),
-										glCircleLineObs(lineList),
-										t(true),
+GraffitiEngine::GraffitiEngine(void) :  polyLineView(lineList),
+										stampView(stampList), circleView(circleList), triangleView(triangleList),
+										circleLineView(lineList),
+										whichView(0),
                                         pressed(false), tracker(false),
 										wX(0.0f), wY(0.0f), wZ(0.0f), xMin(-4.0), xMax(4.0f), yMin(-3.0f),
 										yMax(3.0f), deltaX(xMax-xMin), deltaY(yMax-yMin), pitch(16.0f), colorIndex(0),												saveCounter(1), 
@@ -18,11 +18,11 @@ std::cout<<"GraffitiEngine()"<<std::endl;
 tLine = new Line(colorIndex);
 lineList.push_back(*tLine);
 
-//! Wall erzeugen und Observer zuweisen
+// Wall erzeugen und Observer zuweisen
 	wall = new Wall();
-	glWallObs = WallView(wall);
+	wallView = WallView(wall);
 	
-//!Array initialisieren
+// Array initialisieren
 	trackAry[0] = 0.0f;
 	trackAry[1] = 0.0f;
 	trackAry[2] = 0.0f;	// z-Wert
@@ -33,10 +33,9 @@ lineList.push_back(*tLine);
 	trackAryLeftShoulder[0] = 0.0f;
 	trackAryLeftShoulder[1] = 0.0f;
 
-//! Konstante-Werte sin und cos von Neigungswinkel der Kinect
+// Konstante-Werte sin und cos von Neigungswinkel der Kinect
 	sinPitch = sin(vlgDeg2Rad(pitch));
 	cosPitch = cos(vlgDeg2Rad(pitch));
-
 
 	colorCount = tLine->getColorCount();
 }
@@ -44,39 +43,32 @@ lineList.push_back(*tLine);
 //!OpenGL Initialisierung 
 void GraffitiEngine::initContext(void) 
 {
-	std::cout << "InitContext() begin!" << std::endl;
-
-//! Orthogonalprojektion einstellen
+// Orthogonalprojektion einstellen
     vlgOrtho *ortho = new vlgOrtho(xMin, xMax, yMin, yMax);
     setViewProjection(ortho);
 	useStillCamera(3.0f, 0.0f, 0.0f);
 
-//!	Allgemeine OpenGL einstellungen
+//	Allgemeine OpenGL einstellungen
 	wks->noShow();
 	grid->noShow();
 	setWindowTitle("Virtual Graffiti");
 	wall->init();
-	//glLineWidth(12.0f);
 	
 	attachObserver();
 	VRPNGeraete();
 
-	// init für den Shader der Klasse glCircleLineObs
-	glCircleLineObs.initShader();
+	// init für den Shader der Klasse circleLineView
+	circleLineView.initShader();
+	
 }
-//!OpenGL-Observer hinzufuegen (Aus InitConext auslagern)
+//OpenGL-Observer hinzufuegen (Aus InitConext auslagern)
 void GraffitiEngine::attachObserver(void)
 { 
-	std::cout << "attachGLObserver(&glCircleLineObs)" << std::endl;
-    attachGLObserver(&glCircleLineObs);
-	std::cout << "attachGLObserver(&glWallObs)" << std::endl;
-    attachGLObserver(&glWallObs);
-	std::cout << "attachGLObserver(&glStampObs)" << std::endl;
-    attachGLObserver(&glStampObs);
-	std::cout << "attachGLObserver(&glCircleObs)" << std::endl;
-    attachGLObserver(&glCircleObs);
-	std::cout << "attachGLObserver(&glTriangleObs)" << std::endl;
-	attachGLObserver(&glTriangleObs);
+    attachGLObserver(&circleLineView);
+    attachGLObserver(&wallView);
+    attachGLObserver(&stampView);
+    attachGLObserver(&circleView);
+	attachGLObserver(&triangleView);
 }
 
 
@@ -151,7 +143,6 @@ void GraffitiEngine::handleButton(void *userData, const vrpn_BUTTONCB b)
 		}
 	}else{
 //!WiiMote
-
 		if(b.button == 0 && b.state== 1)//Home
 			savePicture();
 
@@ -160,7 +151,6 @@ void GraffitiEngine::handleButton(void *userData, const vrpn_BUTTONCB b)
 
 		if(b.button == 2 && b.state== 1)//2
 			addStamp();
-
 	//SprayButton 
 		if(b.button == 3 && b.state==1){//A
 			sprayPressed();
@@ -363,10 +353,6 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 void GraffitiEngine::printLists()
 {
 	std::cout <<"Anzahl der Lines: "<< lineList.size()-1<<std::endl;
-	for(int i=0; i<lineList.size();i++)
-	{
-		std::cout<<"\tLine"<<i<<" Länge:"<<lineList.at(i).getMyX().size()<<" zUndoSize:"<<lineList.at(i).getMyUndoSizeZ()<<std::endl;
-	}
 	std::cout <<"Anzahl Stamps: "<< stampList.size()<<std::endl;
 	std::cout <<"Anzahl Circles: "<< circleList.size()<<std::endl;
 	std::cout <<"Anzahl Triangles: "<< triangleList.size()<<std::endl;
@@ -375,6 +361,11 @@ void GraffitiEngine::printLists()
 }
 
 //!Tastatur handler von GLUT-Engine(Localhost)
+/*! Alle Aktionen die hier definiert sind, 
+ *	können unabhängig davon ob, 
+ *	Tracker oder Maus eingestellt ist,
+ *	benutzt werden.
+ */
 void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 {
 	switch (key) 
@@ -411,21 +402,22 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 		wall->previousTexture();
 		break;
 	case 'o':
-		//Change Observer CircleLine = Default
-
-		if(t == true)
+		//Change View CircleLine = Default
+		switch(whichView)
 		{
-			detachGLObserver(&glCircleLineObs);
-			attachGLObserver(&glPolyLineObs);
+			case 0:
+			detachGLObserver(&circleLineView);
+			attachGLObserver(&polyLineView);
 			lineList.front().notify();
-			t= false;
-		}
-		else
-		{		
-			detachGLObserver(&glPolyLineObs);
-			attachGLObserver(&glCircleLineObs);
+			whichView = 1;
+			break;
+	
+			case 1:
+			detachGLObserver(&polyLineView);
+			attachGLObserver(&circleLineView);
 			lineList.front().notify();
-			t=true;
+			whichView = 0;
+			break;
 		}
 
 		break;
@@ -439,8 +431,7 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 		addCircle();
 		break;
 	case 'f':
-		addTriangle();
-		
+		addTriangle();	
 		break;
 	case'r':
 		savePicture();
@@ -489,6 +480,7 @@ void GraffitiEngine::clearAll(void)
 	triangleList.clear();
 	undoList.clear();
 }
+
 void GraffitiEngine::nextColor()
 {
 	colorIndex = incColorIndex(colorIndex);
@@ -541,10 +533,9 @@ void GraffitiEngine::sprayReleased()
 	lineList.push_back(lineList.front());
 	lineList.front().myX.clear();
 	lineList.front().myY.clear();
-	lineList.front().myZ.clear();	//new
+	lineList.front().myZ.clear();	
 	undoList.push_back(0);
 	pressed = false;
-	printLists();
 	
 }
 
@@ -615,30 +606,45 @@ void GraffitiEngine::savePicture(void)
 void GraffitiEngine::about(void)
 {
 	std::cout << "--------------------------------------------" << std::endl;
-    std::cout << " Virtuelle Graffiti Wand " << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
-    std::cout << "                                            " << std::endl;
-    std::cout << " Tastaturkommandos:                         " << std::endl;
+    std::cout << "-         Virtuelle Graffiti Wand          -" << std::endl;
+	std::cout << "--------------------------------------------" << std::endl;
+    std::cout << "- Tastatur                                 -" << std::endl; 
+    std::cout << "--------------------------------------------" << std::endl; 
 	std::cout << "  p	   : VRPN ausgabe aktiviren           " << std::endl;	
 	std::cout << "  s	   : VRPN ausgabe deaktivieren        " << std::endl;
-    std::cout << "  SPACE  : Sprühknopf                    	  " << std::endl;
-	std::cout << "  g  	   : Ausgabe lineList.size(), also Anzahl der gemalten Objekte" << std::endl;
-	std::cout << "  c  	   : Bild Resetten							 " << std::endl;
-	std::cout << "  t  	   : toggle Tracker/Maus					 "  << std::endl;
-	std::cout << "  w  	   : nächster Hintergrund					 "  << std::endl;
-	std::cout << "  W 	   : vorheriger Hintergrund					 "  << std::endl;
-	std::cout << "  a  	   : nächste Farbe							 "  << std::endl;
-	std::cout << "  d 	   : vorherige Farbe						 "  << std::endl;
-	std::cout << "  o  	   : Zuletzt gemalte PolyLine öffnen, schließen oder zum Polygon machen"  << std::endl;
-	std::cout << "  h  	   : Logo/Bitmap anhängen					 "  << std::endl;
+    std::cout << "	SPACE  : Sprühknopf, kann nur zusammen mit dem Tracker benutzt werden!";
+	std::cout << 		    " (t) muss also aktiviert sein"		<< std::endl;
+	std::cout << "  g  	   : Ausgabe der Anzahl der gemalten Objekte" << std::endl;
+	std::cout << "  c  	   : Alle gemalten Objekte entfernen		 " << std::endl;
+	std::cout << "  t  	   : Umschalten zwischen  Tracker/WiiMote und Tastatur/Maus "  << std::endl;
+	std::cout << "  w  	   : Nächster Hintergrund					 "  << std::endl;
+	std::cout << "  W 	   : Vorheriger Hintergrund					 "  << std::endl;
+	std::cout << "  a  	   : Nächste Farbe							 "  << std::endl;
+	std::cout << "  d 	   : Vorherige Farbe						 "  << std::endl;
+	std::cout << "  o  	   : Umschalten zwischen PolyLineView und CircleLineView"  << std::endl;
+	std::cout << "  h  	   : Logo/Bitmap hinzufügen					 "  << std::endl;
 	std::cout << "  k  	   : Kreis malen							 "  << std::endl;
-	std::cout << "  z  	   : undo									 "  << std::endl;
+	std::cout << "  z  	   : Rückgängig								 "  << std::endl;
 	std::cout << "  j  	   : Interface ein/ausblenden				 "  << std::endl;
 	std::cout << "  r  	   : Bild abspeichern						 "  << std::endl;
-    std::cout << endl;
-    std::cout << " ESC,                                       " << std::endl;
-    std::cout << " q/Q: Programm beenden                      " << std::endl;
-    std::cout << "--------------------------------------------" << std::endl; 
+    std::cout << " ESC, q/Q: Programm beenden                      " << std::endl;
+	std::cout << "--------------------------------------------" << std::endl;
+    std::cout << "- Wii                                      -" << std::endl; 
+    std::cout << "--------------------------------------------" << std::endl;
+	std::cout << "	1	   : Kreis malen"						<< std::endl;
+	std::cout << "	2	   : Logo/Bitmap hinzufügen"			<< std::endl;
+	std::cout << "	A	   : Sprühknopf, kann nur zusammen mit dem Tracker benutzt werden!";
+	std::cout << 		    " (t) muss also aktiviert sein"		<< std::endl;
+	std::cout << "	B	   : Rückgängig"						<< std::endl;
+	std::cout << "	-	   : Alle gemalten Objekte entfernen"	<< std::endl;
+	std::cout << "	+	   : zurzeit nicht Verwendet"			<< std::endl;
+	std::cout << "	LINKS  : Vorherige Farbe"					<< std::endl;
+	std::cout << "	RECHTS : Nächste Farbe"						<< std::endl;
+	std::cout << "	HOCH   : Nächster Hintergrund"				<< std::endl;
+	std::cout << "	RUNTER : Interface ein/ausblenden"			<< std::endl;
+    std::cout << "--------------------------------------------" << std::endl;
+    std::cout << "-Patrick Gab, Sascha Hayton                -" << std::endl; 
+	std::cout << "--------------------------------------------" << std::endl; 
 }
 
 //!Singelton
