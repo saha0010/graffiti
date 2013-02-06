@@ -169,9 +169,7 @@ void GraffitiEngine::handleButton(void *userData, const vrpn_BUTTONCB b)
 			clearAll();
 
 		if(b.button == 6 && b.state== 1){//+
-			//if(!lineList.empty())	
-				
-				//lineList.back().changePolyLineMode();	
+			//Free at the moment				
 		}
 
 		if(b.button == 7 && b.state == 1)//links
@@ -211,31 +209,23 @@ void GraffitiEngine::handleTracker(void* userData, const vrpn_TRACKERCB t)
 		{
 
 			zUndoSize = undoList.size();
-			//line->myX.push_back(coordAdjuTracker(true));
-			//line->myY.push_back(coordAdjuTracker(false));	
 
 			lineList.front().myX.push_back(trackAry[0]);
 			lineList.front().myY.push_back(trackAry[1]);
-			lineList.front().myZ.push_back(trackAry[2]);		//new
+			lineList.front().myZ.push_back(trackAry[2]);		
 			lineList.front().myUndoSizeZ = zUndoSize;
-		std::cout<<"----------------------------"<<std::endl;
-		std::cout<<wZ<<std::endl;
-		std::cout<<"----------------------------"<<std::endl;
+
 	
 		}
 
 		if(t.sensor == 8) //Linke Hand
 		{
-			//nextTextureGesture();		//Tracker- und Maus-fähig
-
-			//trackAryLeft[1] = t.pos[1];
 			trackAry[0] = t.pos[0];
 			trackAry[1] = t.pos[1];
 			trackAry[2] = t.pos[2];
 			wX = trackAry[0];
 			wY = trackAry[1];
 			wZ = trackAry[2];
-			
 
 			trackAryLeft[1] = (cosPitch * t.pos[1] + sinPitch * t.pos[2]) -0.82f;
 

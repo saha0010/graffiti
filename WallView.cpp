@@ -34,15 +34,25 @@ void WallView::draw(void)
 {
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, wall->texNames[wall->backgroundIndex]);	
-		//glColor3f(1.0f, 0.0f, 0.0f); //macht er
 		glBegin(GL_QUADS);	
-			//glNormal3f(0.0f, 0.0f, 1.0f);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(-4.0f, -3.0f,-5.0f);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(4.0f, -3.0f,-5.0f);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(4.0f, 3.0f,-5.0f);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-4.0f, 3.0f,-5.0f);
 		glEnd();
 	glDisable(GL_TEXTURE_2D);
+/*
+//White Background
+glPolygonMode(GL_FRONT,GL_FILL);
+glBegin(GL_QUADS);
+glColor3f(1.0f,1.0f,1.0f);
+	glVertex3f(-4.0f, -3.0f,-5.0f);
+	glVertex3f(4.0f, -3.0f,-5.0f);
+	glVertex3f(4.0f, 3.0f,-5.0f);
+	glVertex3f(-4.0f, 3.0f,-5.0f);
+glEnd();	
+*/
+	
 
 	if (wall->showDataReceived)
 	{
@@ -54,13 +64,10 @@ void WallView::draw(void)
 
 //! Visuelle Wiedergabe des Tracker Signals
 void WallView::dataReceivedCircle(void)
-{ // Source Prof.Brill Computergrafik Beispiel "TrafficLight"
-
+{ 
+// Source Prof.Brill Computergrafik Beispiel "TrafficLight"
 	float h = 2.0f*static_cast<float>(M_PI)/static_cast<float>(32);
-	//glTranslatef(3.75f, -4.25f, 1.0f);
 	glPolygonMode(GL_FRONT, GL_FILL);
-
-	//glColor3f(0.0f, 1.0f, 0.0f);
 	dataReceived(wall->received);
 
 	// Kreis ausgeben
@@ -71,7 +78,7 @@ void WallView::dataReceivedCircle(void)
 	glEnd();
 }
 
-//! Tracker Daten empfangen
+// Tracker Daten empfangen
 void WallView::dataReceived(bool data)
 {
 	if (data)
@@ -79,7 +86,8 @@ void WallView::dataReceived(bool data)
 	else
 		glColor3f(1.0f, 0.0f, 0.0f);
 }
-//!Wurde durch VisionMode erstzt
+
+//Wurde durch VisionMode erstzt
 void WallView::chosenColor(void)
 {
 	float transX = -3.9f;
@@ -103,15 +111,14 @@ void WallView::visionMode(void)
 	float h = 2.0f*static_cast<float>(M_PI)/static_cast<float>(18);
 	glBegin(GL_POLYGON);
 	glEnable(GL_LINE_SMOOTH);
-	//glLineWidth(0.3f);
 	glColor3f(((float)wall->getActiveColor()->getRed())/255,
 		      ((float)wall->getActiveColor()->getGreen())/255,
 			  ((float)wall->getActiveColor()->getBlue())/255);
-		
-	
+			
 		for(int i = 0; i<360;i++)
-			glVertex3f(wall->getX() + 0.1f*cos(static_cast<float>(i*h)),
-					   wall->getY() + 0.1f*sin(static_cast<float>(i*h)),  2.0f);	
+			glVertex3f(wall->getX() + 0.075f*cos(static_cast<float>(i*h)),
+					   wall->getY() + 0.075f*sin(static_cast<float>(i*h)),  
+					   2.0f);	
 		glEnd();
 }
 

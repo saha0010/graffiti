@@ -12,7 +12,7 @@
 /*! Observer für die Stamps*/
 #include "StampView.h"
 
-/*! Observer für die Kreise*/
+
 #include "CircleView.h"
 #include "vlgSubject.h"
 #include <vlgVRPNEngine.h>

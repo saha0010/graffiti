@@ -14,18 +14,17 @@ class CircleLineView : public vlgGLObserver
 {
 
 public:
-
+	//! Konstruktor mit vector<Line> &l als Parameter
 	CircleLineView(std::vector<Line> &l);
 
-	//! Grafische Ausgabe, wird in der display()-Funktion des Kerns aufgerufen
+	//! Grafische Ausgabe, wird in der display()-Funktion der Anwedungsklasse aufgerufen
 	/*!
-		* Die draw-Funktion ist für das betrachten
-		* der aktuell gemalten Linie zuständig. Er prüft welcher \a mode 
-		* aktiv ist und zeichnet die Linie entsprechenden den erhaltenen
-		* x und y Werten aus der myX- und myY-Liste und den aktiven
-		* RGB-Anteilen der aktiven Farbe.
+		* Die draw-Funktion ist für das malen
+		* der Linien zuständig. Diese Funktion wird von der Anwednungsklasse konstant
+		* automatisch aufgerufen, ohne das ein notify() notwendig ist.
 	*/
 	virtual void draw(void);
+
     //! Initialisierung des GLSL Shader-Handlers
 	/*!
 	 * Setzt einen gültigen OpenGL-Kontext voraus; aufrufen in Anwendungsklasse::initContext() !!!!!
@@ -34,25 +33,32 @@ public:
 
 	//! Update, Änderungen werden angepasst
 	virtual bool update(const vlgSubject &changedSubject);
+
 	//! Setter Methode für Membervariable "blending"
 	void setBlending(bool b);
+
 	//! Getter Methode für Membervariable "blendind"
 	bool getBlending(void);
+
 private:
 	//! Zeiger auf Shader-Handler
 	vlgShaderHandler *shader;
+
 	//! Zeiger Uniform-Varibalen
 	/*!
 	 *	Übergibt die aktive Farbe an den Shader weiter.
 	 */
 	vlgShaderUniform *uniform;
+
 	//! Methode um Uniform Variable zu setztn
 	void setUniforms(Line l);
 
 	//! Error-Code des Shader-Handlers
 	short errorCode;
+
 	//! Name des Vertex-Shaders
 	std::string vertexShader;
+
 	//! Zeiger auf das Subject, das wir beobachten
 	std::vector<Line> &line;
 
