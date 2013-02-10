@@ -2,8 +2,7 @@
 #include <iostream>
 Line::Line(void)
 {
-	//std::cout << "Line()" << std::endl;
-	setActiveColor(new vlgColor(0.0f, 0.0f, 0.0f));
+	setActiveColorByIndex(0);
 }
 
 Line::Line(int i)

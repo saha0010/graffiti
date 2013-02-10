@@ -63,18 +63,6 @@ public:
 	*/
 	virtual void dataReceived(bool data);
 
-	//! Visuelle Rückgabe der ausgewählten Farbe
-	/*!
-		* Die chosenColor-Funktion der WallView zeichnet und translatiert
-		* ein Rechteck in die untere linke Ecke der Darstellung. Sie färbt
-		* das Rechteck mit den RGB-Anteilen der aktiven Farbe. Diese visuelle
-		* Rückgabe kann über das false setzten des Bool showDataReceived
-		* ausgeblendet werden.
-		*
-		* \sa dataReceivedCircle(), visionMode()
-	*/
-	void chosenColor(void);
-
 	//! Visuelle Hilfe zur Erkennung der aktuellen Position der Haupthand
 	/*!
 		* Die visionMode-Funktion stellt an der aktuellen Position der

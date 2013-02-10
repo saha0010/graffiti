@@ -8,8 +8,6 @@
 #endif
 #include <GL/gl.h>
 
-
-
 CircleView::CircleView(std::vector<Circle> &c):circles(c),n(32)
 {
 	//std::cout << "CircleView(std::vector<Circle> &c)" << std::endl;
@@ -18,15 +16,12 @@ CircleView::CircleView(std::vector<Circle> &c):circles(c),n(32)
 	{
 		circles.at(i).attach(this);
 	}
-
 }
-
 
 void CircleView::draw(void)
 {// Source Prof.Brill Computergrafik Beispiel "TrafficLight"	
 	for(int j = (int)circles.size()-1; j>=0;j--)
-	{
-		
+	{	
 		if(circles[j].getFilled()==true)
 			glPolygonMode(GL_FRONT, GL_FILL);
 		else
@@ -41,7 +36,7 @@ void CircleView::draw(void)
 	    for (int i=0; i<n; i++)	
 		glVertex3f(circles[j].getX() + circles[j].getRadius()*cos(static_cast<float>(i*h)), 
 			       circles[j].getY() + circles[j].getRadius()*sin(static_cast<float>(i*h)),
-				   circles[j].getZ()*0.02f);
+				   circles[j].getZ()*0.002f);
 		glEnd();
 	}
 }

@@ -8,13 +8,28 @@
 class Color : public vlgSubject
 {
 public:
-	 Color(void);
-	 Color(int i);
+	//!Default Konstruktor
+	/*
+	 * Setzt den activeColorIndex auf 0
+	 */
+	Color(void);
+	//!Konstruktor
+	/*!
+	 * Ruft Default Konstruktor auf und setzt Farbindex.
+	 * \param int Farbindex
+	 */
+	Color(int farbIndex);
 	
+	//! Setter für activeColorIndex
 	void setActiveColorByIndex(int i);
-	void setActiveColor(vlgColor *color);
+
+	//! Getter für activeColor
 	vlgColor* getActiveColor(void);	
 
+	//! Gibt die Größe von colorList zurück
+	/*!
+	 *	\return colorList.size()
+	 */
 	int getColorCount(void);
 
 private:

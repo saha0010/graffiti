@@ -15,16 +15,16 @@ void StampView::draw(void)
 	glBindTexture(GL_TEXTURE_2D, stamps.at(i).getStaNames()[stamps.at(i).getStampIndex()]);	
 		glBegin(GL_QUADS);	
 			glTexCoord2f(0.0f, 0.0f); 
-			glVertex3f(stamps[i].getX()-stamps[i].getWidth(), stamps[i].getY()-stamps[i].getHeight(), stamps[i].getZ()*0.02f);
+			glVertex3f(stamps[i].getX()-stamps[i].getWidth(), stamps[i].getY()-stamps[i].getHeight(), stamps[i].getZ()*0.002f);
 
 			glTexCoord2f(1.0f, 0.0f); 
-			glVertex3f(stamps[i].getX()+stamps[i].getWidth(), stamps[i].getY()-stamps[i].getHeight(), stamps[i].getZ()*0.02f);
+			glVertex3f(stamps[i].getX()+stamps[i].getWidth(), stamps[i].getY()-stamps[i].getHeight(), stamps[i].getZ()*0.002f);
 
 			glTexCoord2f(1.0f, 1.0f); 
-			glVertex3f(stamps[i].getX()+stamps[i].getWidth(), stamps[i].getY()+stamps[i].getHeight(), stamps[i].getZ()*0.02f);
+			glVertex3f(stamps[i].getX()+stamps[i].getWidth(), stamps[i].getY()+stamps[i].getHeight(), stamps[i].getZ()*0.002f);
 
 			glTexCoord2f(0.0f, 1.0f); 
-			glVertex3f(stamps[i].getX()-stamps[i].getWidth(), stamps[i].getY()+stamps[i].getHeight(), stamps[i].getZ()*0.02f);
+			glVertex3f(stamps[i].getX()-stamps[i].getWidth(), stamps[i].getY()+stamps[i].getHeight(), stamps[i].getZ()*0.002f);
 
 		glEnd();
 	glDisable(GL_TEXTURE_2D);

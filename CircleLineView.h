@@ -14,7 +14,10 @@ class CircleLineView : public vlgGLObserver
 {
 
 public:
-	//! Konstruktor mit vector<Line> &l als Parameter
+	//! Konstruktor
+	/*!
+	 * \param std::vector<Line> &l //Eine Liste aus Lines; GraffitiEngine::lineList
+	*/
 	CircleLineView(std::vector<Line> &l);
 
 	//! Grafische Ausgabe, wird in der display()-Funktion der Anwedungsklasse aufgerufen
@@ -27,7 +30,7 @@ public:
 
     //! Initialisierung des GLSL Shader-Handlers
 	/*!
-	 * Setzt einen gültigen OpenGL-Kontext voraus; aufrufen in Anwendungsklasse::initContext() !!!!!
+	 * Setzt einen gültigen OpenGL-Kontext voraus; aufrufen in Anwendungsklasse::initContext()!!!!!
 	 */
 	void initShader(void);
 
@@ -50,7 +53,7 @@ private:
 	 */
 	vlgShaderUniform *uniform;
 
-	//! Methode um Uniform Variable zu setztn
+	//! Methode um Uniform Variable zu setzen
 	void setUniforms(Line l);
 
 	//! Error-Code des Shader-Handlers
@@ -59,16 +62,13 @@ private:
 	//! Name des Vertex-Shaders
 	std::string vertexShader;
 
-	//! Zeiger auf das Subject, das wir beobachten
+	//! Referenz des Subjects, das wir beobachten
 	std::vector<Line> &line;
 
-	//! Varibale um Blending an oder aus zuschalten.
+	//! Varibale um Blending an oder aus zuschalten
 	bool blending;
 
-	float zd;
-	float zdO;
-	float zE;
-	float zTmp;
+	float zE; //!< Varibale zum setzen der Z-Ebenen Position des Objekts
 	
 };
 #endif 

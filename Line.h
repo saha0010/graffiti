@@ -7,8 +7,10 @@
 class Line : public Color
 {
 public:
+	//!Default Konstruktor
 	Line(void);
 
+	//!
 	Line(int i);
 
 	std::vector<float> getMyX(void);

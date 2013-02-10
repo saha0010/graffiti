@@ -60,7 +60,7 @@ void CircleLineView::draw(void)
 		if (i == 0)
 			zE=2;
 		else 
-			zE= (float) (line.at(i).getMyUndoSizeZ()*0.02f);// 0.02 da bei 0.01 Fehler enstanden sind
+			zE= (float) (line.at(i).getMyUndoSizeZ()*0.002f);// 0.002 da bei 0.001 Fehler enstanden sind
 		
 		//Shader die Farbe übergeben
 		if (errorCode == 0)

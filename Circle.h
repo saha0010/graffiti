@@ -10,9 +10,11 @@
 class Circle : public Shape
 {
 public:
-	//! Konstruktor mit Positionswerten, Radius und Farbindex
-	Circle(float radius, float x, float y, float z, int i);
-
+	//! Konstruktor
+	/*
+	 * \param float radius, float x, float y, float z, int farbindex
+	 */
+	Circle(float radius, float x, float y, float z, int farbIndex);
 
 	//! set-Funktion zum setzen des Radius
 	void setRadius(float r);
@@ -21,9 +23,8 @@ public:
 	float getRadius(void);
 
 
-
 private:
 	
-	float radius;	//!< Varialbe - Radius	
+	float radius;	//!<  Varibale für Radius des Kreises
 };
 #endif

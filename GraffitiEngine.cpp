@@ -169,7 +169,7 @@ void GraffitiEngine::handleButton(void *userData, const vrpn_BUTTONCB b)
 			clearAll();
 
 		if(b.button == 6 && b.state== 1){//+
-						
+				changeLineView();		
 		}
 
 		if(b.button == 7 && b.state == 1)//links
@@ -451,12 +451,12 @@ void GraffitiEngine::clearAll(void)
 
 void GraffitiEngine::nextColor()
 {
-	colorIndex = incColorIndex(colorIndex);
+	colorIndex = incColorIndex();
 	wall->setActiveColorByIndex(colorIndex);
 }
 void GraffitiEngine::previousColor()
 {
-	colorIndex = decColorIndex(colorIndex);	
+	colorIndex = decColorIndex();	
 	wall->setActiveColorByIndex(colorIndex);
 }
 
@@ -570,27 +570,25 @@ void GraffitiEngine::savePicture(void)
 	std::cout<<"Bild "<<saveCounter<<" wurde gespeichert!"<<std::endl;
 	saveCounter++;
 }
+//Ändern der View für Lines
 void GraffitiEngine::changeLineView(void)
 {
-			//Change View CircleLine = Default
-		switch(whichView)
-		{
-			case 0:
-			detachGLObserver(&circleLineView);
-			attachGLObserver(&polyLineView);
-			lineList.front().notify();
-			whichView = 1;
-			break;
-	
-			case 1:
-			detachGLObserver(&polyLineView);
-			attachGLObserver(&circleLineView);
-			lineList.front().notify();
-			whichView = 0;
-			break;
-		}
+	switch(whichView)
+	{
+		case 0:
+		detachGLObserver(&circleLineView);
+		attachGLObserver(&polyLineView);
+		lineList.front().notify();
+		whichView = 1;
+		break;
+		case 1:
+		detachGLObserver(&polyLineView);
+		attachGLObserver(&circleLineView);
+		lineList.front().notify();
+		whichView = 0;
+		break;
 	}
-
+}
 
 //Info ausgeben ueber die Tastaturbelegung               
 void GraffitiEngine::about(void)

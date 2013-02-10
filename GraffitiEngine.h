@@ -28,13 +28,15 @@ public:
 	//!OpenGL Initialisierung
 	void initContext(void);
 
-	//!VRPN-Device Handler
-		//!Analog-Device(Maus)
+	//!Analog-Device(Maus)
 	virtual void handleAnalog(void* userData, const vrpn_ANALOGCB a);
-		/*!Button-Devices(Tastatur oder WiiMote muss je nach Device im Code umgeschaltet und neu gebaut werden,
-						 da aktuelle VRPN-Version keine 2 Verschiedene Button Devices unterstützt)*/
+
+	/*!Button-Devices(Tastatur oder WiiMote muss je nach Device im Code umgeschaltet und neu gebaut werden,
+	 * da aktuelle VRPN-Version keine 2 Verschiedene Button Devices unterstützt)
+	 */
 	virtual void handleButton(void* userData, const vrpn_BUTTONCB b);
-		//!Tracker-Device(Kinect)
+
+	//!Tracker-Device(Kinect)
     virtual void handleTracker(void* userData, const vrpn_TRACKERCB t);
 
 	//!Tastatur handler von GLUT-Engine(Localhost)
@@ -44,18 +46,23 @@ public:
 	 *	benutzt werden.
 	 */
 	void keyboard(unsigned char key, int x, int y);
+
 	//!Anwendungsbeschreibung
 	void about(void);
+
 	//!Singelton
 	static GraffitiEngine* Instance(void);
 
 private:
 	//!Liste der gemalten PolyLines
-	vector<Line> lineList;		
+	vector<Line> lineList;
+
 	//!Liste der gemalten Stamps
 	std::vector<Stamp> stampList;
+
 	//!Liste der gemalten Kreise
 	std::vector<Circle> circleList;
+
 	//!Liste der gemalten Dreiecke
 	std::vector<Triangle> triangleList;
 
@@ -67,18 +74,22 @@ private:
 
 	//!View für die Linien Ausgabe als Polylines
 	PolyLineView polyLineView;
+
 	//!View für die Stamps(Bitmaps drauf kleben)
 	StampView stampView;
+
 	//!View für Kreise
 	CircleView circleView;
+
 	//!View für Dreiecke
 	TriangleView triangleView;	
+
 	//!View für die im Ausgabe als Kreise
-	CircleLineView circleLineView;		
+	CircleLineView circleLineView;	
+
 	//!View für den Hintergrund und Interface Elemente
 	WallView wallView;
 
-	
 	bool pressed; //!< Variable um zu erkennen ob "Spühtaste gedrückt ist"
 	
 	//!< Variable umn zu erknnen mit welcher View die Linien angezeigt werden sollen.
@@ -86,7 +97,8 @@ private:
 	 *	0 = CircleLineView, 
 	 *	1 = PolyLineView
 	 */
-	int whichView;	
+	int whichView;
+
 	bool tracker; //!< Varibale um zu erkennen ob Tracker oder Maus benutzt wird
 
 	// Einkommende Werte der Maus bzw. des Trackers	
@@ -125,7 +137,7 @@ private:
 	bool leftHand;	//!< Boolean zum erkennen der Wischen-Startgeste
 
 
-	float zUndoSize;	
+	float zUndoSize;	//!< uUndoSize entspricht der Größe von undoList.size()
 
 	//! Liste für die undo() Funktion
 	/*!Immer wenn ein Objekt gemalt wird wird zusätzlich je nach Objekt ein int in den vector gepusht.
@@ -307,48 +319,25 @@ private:
 	*/
 	void undo(void);
 
-	//!Umrechnen des Koordinatensystems VRPN-Maus -> Monitor
+	//!Koordinatentranformationen
 	/*!
 		* Die coordAdjuMouse-Funktion rechnet die erhaltenen 
-		* Maus-Daten in unser Koordinatensystem um. 
-		* x = \a xMin + \a xY * (\a xMax - \a xMin)
-		* y = \a ymin + (1 + \a wY) * (\a yMax - \a yMin)
-		* Mithilfe von Bias erhalten wir so die für uns relevanten
-		* Koordinaten, nicht um Bezug auf den Bildschirm, sondern
-		* im Bezug auf unser Koordinatensystem [-3,3], [-4,4].
-		* Nach dem Ansatz immer im Verhältnis 4:3 die View anzuzeigen.
+		* Analog-Daten in unser Koordinatensystem um.
 		*
-		* \param chooseVariable boolean zum Steuern der Ausgabe von x oder y
-		* \return \a coordAdjuTracker liefert den Transformierten x oder y Wert zurück
-		* \sa coordAdjuTracker()
+		* \param float array in dem die Koordinaten verändert werden sollen
+		* \sa coordAdju(float[3])
 	*/
-
 	void coordAdjuMouse(float coords[]); 
-	//!Umrechnen des Koordinatensystems VRPN-Tracker(Kinect) -> Leinwand
+
+	//!Koordinatentranformationen
 	/*!
 		* Die coordAdjuTracker-Funktion rechnet die erhaltenen 
-		* Tracker-Daten in unser Koordinatensystem um. 
-		* (siehe Kapitel 5: Koordinatentransformationen)
-		* Mithilfe von \a yAnNeigungswinkelAnpassen() wird 
-		* die Rotation heraus gerechnet.
+		* Tracker-Daten in unser Koordinatensystem um und passt den 
+		* Pitch der Kinect an.
 		*
-		* \param chooseVariable boolean zum Steuern der Ausgabe von x oder y
-		* \return \a coordAdjuTracker liefert den Transformierten x oder y Wert zurück
-		* \sa coordAdjuMouse()
+		* \param float array in dem die Koordinaten verändert werden sollen
+		* \sa coordAdjuMouse(float coords[]
 	*/
-	//float coordAdjuTracker(bool chooseVariable);
-
-	//! Y-Werte an den Neigungswinkel der Kinect anpassen, z-Rotation hinzuaddieren
-	/*!
-		* Die yAnNeigungswinkelAnpassen-Funktion rechnet den erhaltenen
-		* Rotationsanteil (Neigung der Kinect, Pitchwinkel) in Abhängigkeit 
-		* zur Z-Postition heraus (siehe Kapitel 5: Koordinatentransformationen)
-		*
-		* \return \a yAnNeigungswinkelAnpassen liefert den y-Wert, ohne Rotationanteil zurück
-		* \sa coordAdjuTracker()
-	*/
-	//float yAnNeigungswinkelAnpassen(void);
-
 	void coordAdju(float[3]);
 
 	//! Funktion zum Bild speichern im DDS-Format in den Buildordner
@@ -359,6 +348,13 @@ private:
 		* Buildordner angehängt.
 	*/
 	void savePicture(void);
+
+	//! Funktion zum ändern der View für Lines
+		/*!
+		 *	 CircleLineView = 0 (Default)
+		 *	 PolyLineView	= 1
+		 */
+	void changeLineView(void);
 
 	//!Instanzvariable für das Singleton-Muster 
 	static GraffitiEngine* instance;

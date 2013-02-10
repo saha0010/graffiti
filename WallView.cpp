@@ -41,6 +41,7 @@ void WallView::draw(void)
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-4.0f, 3.0f,-5.0f);
 		glEnd();
 	glDisable(GL_TEXTURE_2D);
+
 /*
 //White Background
 glPolygonMode(GL_FRONT,GL_FILL);
@@ -53,11 +54,9 @@ glColor3f(1.0f,1.0f,1.0f);
 glEnd();	
 */
 	
-
 	if (wall->showDataReceived)
 	{
 	dataReceivedCircle();
-//	chosenColor();
 	visionMode();
 	}
 }
@@ -85,25 +84,6 @@ void WallView::dataReceived(bool data)
 		glColor3f(0.0f, 1.0f, 0.0f);
 	else
 		glColor3f(1.0f, 0.0f, 0.0f);
-}
-
-//Wurde durch VisionMode erstzt
-void WallView::chosenColor(void)
-{
-	float transX = -3.9f;
-	float transY = -2.9f;
-
-	glBegin(GL_POLYGON);
-	glColor3f(((float)wall->getActiveColor()->getRed())/255,
-		      ((float)wall->getActiveColor()->getGreen())/255,
-			  ((float)wall->getActiveColor()->getBlue())/255);
-
-		glVertex2f(0+transX, 0+transY);
-		glVertex2f(0.6f+transX, 0+transY);
-		glVertex2f(0.6f+transX, 0.3f+transY);
-		glVertex2f(0+transX, 0.3f+transY);
-				  
-	glEnd();
 }
 
 void WallView::visionMode(void)
