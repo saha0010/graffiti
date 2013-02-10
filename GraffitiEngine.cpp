@@ -169,7 +169,7 @@ void GraffitiEngine::handleButton(void *userData, const vrpn_BUTTONCB b)
 			clearAll();
 
 		if(b.button == 6 && b.state== 1){//+
-			//Free at the moment				
+						
 		}
 
 		if(b.button == 7 && b.state == 1)//links
@@ -186,7 +186,7 @@ void GraffitiEngine::handleButton(void *userData, const vrpn_BUTTONCB b)
 	}
 }
 
-//!Callback für Tracker0
+//Callback für Tracker0
 void GraffitiEngine::handleTracker(void* userData, const vrpn_TRACKERCB t)
 {
 	// Tracker-Signal vorhanden
@@ -203,19 +203,15 @@ void GraffitiEngine::handleTracker(void* userData, const vrpn_TRACKERCB t)
 			wall->setX(trackAry[0]);
 			wall->setY(trackAry[1]);
 			
-		}
-		
+		}	
 		if(pressed && t.sensor == 14)//Spray gedrückt und linke Hand
 		{
-
 			zUndoSize = undoList.size();
 
 			lineList.front().myX.push_back(trackAry[0]);
 			lineList.front().myY.push_back(trackAry[1]);
 			lineList.front().myZ.push_back(trackAry[2]);		
 			lineList.front().myUndoSizeZ = zUndoSize;
-
-	
 		}
 
 		if(t.sensor == 8) //Linke Hand
@@ -226,10 +222,8 @@ void GraffitiEngine::handleTracker(void* userData, const vrpn_TRACKERCB t)
 			wX = trackAry[0];
 			wY = trackAry[1];
 			wZ = trackAry[2];
-
 			trackAryLeft[1] = (cosPitch * t.pos[1] + sinPitch * t.pos[2]) -0.82f;
-
-			nextTextureGestureTracker();//Tracker abhängig
+			nextTextureGestureTracker();
 		}
 
 		if (t.sensor == 5) //Linke Schulter
@@ -387,24 +381,7 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 		wall->previousTexture();
 		break;
 	case 'v':
-		//Change View CircleLine = Default
-		switch(whichView)
-		{
-			case 0:
-			detachGLObserver(&circleLineView);
-			attachGLObserver(&polyLineView);
-			lineList.front().notify();
-			whichView = 1;
-			break;
-	
-			case 1:
-			detachGLObserver(&polyLineView);
-			attachGLObserver(&circleLineView);
-			lineList.front().notify();
-			whichView = 0;
-			break;
-		}
-
+		changeLineView();
 		break;
 	case'd':
 		nextColor();	
@@ -461,7 +438,7 @@ int GraffitiEngine::decColorIndex(void)
 		return --colorIndex;
 	}
 }
-//!Bild verwerfen
+//Bild verwerfen
 void GraffitiEngine::clearAll(void)
 {
 	lineList.clear();
@@ -553,7 +530,7 @@ void GraffitiEngine::undo(void)
 		this->updateOpenGL();
 	}
 }
-//!Umrechnen der Welt und Monitorkoordinate im Bezug auf das Koordinatensystem der Anwendung
+//Umrechnen der Welt und Monitorkoordinate im Bezug auf das Koordinatensystem der Anwendung
 void GraffitiEngine::coordAdjuMouse(float coords[])
 {
 	float oldX = coords[0];
@@ -575,7 +552,7 @@ void GraffitiEngine::coordAdju(float coord[])
 }
 
 
-//!Speichern des Bildes
+//Speichern des Bildes
 void GraffitiEngine::savePicture(void)
 {
 	int w,h;
@@ -593,7 +570,29 @@ void GraffitiEngine::savePicture(void)
 	std::cout<<"Bild "<<saveCounter<<" wurde gespeichert!"<<std::endl;
 	saveCounter++;
 }
-//!Info ausgeben ueber die Tastaturbelegung               
+void GraffitiEngine::changeLineView(void)
+{
+			//Change View CircleLine = Default
+		switch(whichView)
+		{
+			case 0:
+			detachGLObserver(&circleLineView);
+			attachGLObserver(&polyLineView);
+			lineList.front().notify();
+			whichView = 1;
+			break;
+	
+			case 1:
+			detachGLObserver(&polyLineView);
+			attachGLObserver(&circleLineView);
+			lineList.front().notify();
+			whichView = 0;
+			break;
+		}
+	}
+
+
+//Info ausgeben ueber die Tastaturbelegung               
 void GraffitiEngine::about(void)
 {
 	std::cout << "--------------------------------------------" << std::endl;
