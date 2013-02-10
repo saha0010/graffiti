@@ -284,7 +284,6 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 	string s;
 	if (tracker)
 	{
-
 		if(fabs (trackAryLeft[1] - trackAryLeftShoulder[1]) <= 0.14f) //absoluter Betrag von yLinkeHand - yLinkeSchulter mit einer erlaubten Varianz von 0.15f
 		{
 			xGeste = trackAry[0];
@@ -295,8 +294,7 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 			std::cout<< s <<" in Gestenbereich! X = "    <<xGeste<<std::endl;wwwww
 			std::cout<< s <<" in Gestenbereich! delta = " <<delta<<std::endl;
 			std::cout<<"----------------------------"<<std::endl;
-			std::cout<< s <<" nextTexturGestureTracker"<<std::endl;*/
-	
+			std::cout<< s <<" nextTexturGestureTracker"<<std::endl;*/	
 			if(!pressed)
 			{
 				
@@ -322,18 +320,16 @@ void GraffitiEngine::nextTextureGestureTracker(void)
 				}
 			}
 			else
-				leftHand = false;
-			
+				leftHand = false;			
 		} else
 			{
-			leftHand = false;
-			temp = 0.0f;
+				leftHand = false;
+				temp = 0.0f;
 			}
 	}
-
 }
 
-//! Anzahl der gemalten PolyLines ausgeben
+// Anzahl der gemalten PolyLines ausgeben
 void GraffitiEngine::printLists()
 {
 	std::cout <<"Anzahl der Lines: "<< lineList.size()-1<<std::endl;
@@ -542,7 +538,6 @@ void GraffitiEngine::coordAdjuMouse(float coords[])
 
 void GraffitiEngine::coordAdju(float coord[])
 {
-	//	return ((cosPitch*wY + sinPitch*wZ) -0.82f);
 	float  oldX = coord[0];
 	float  oldY = coord[1];
 	float  oldZ = coord[2];

@@ -7,16 +7,14 @@
 #include "vlgTextureMap2D.h"
 #include "Rectangle.h"
 
-//! Klasse zum erstellen der Bitmaps - Texture Mapping
+//! Modell Klasse für Stempel
 class Stamp : public Rectangle
 {
 public:
-	//!OpenGL Initialisierung
+	//! Konstruktor
 	/*!
-		* Die aktuelle Postion wird übermittelt an jener das
-		* Rechteck mit Texture bzw. das Bitmap angehängt werden
-		* soll.
-	*/
+	 * \param float x, float y, float z
+	 */
 	Stamp(float x=0, float y=0, float z=0);
 	
 	//! Funktion das nächste Bitmap zu wählen
@@ -28,19 +26,24 @@ public:
 	*/
 	void nextStamp(void);
 
-	short getStatus(void);
-	int getAnzahlStamps(void);
+	//! Getter Methode für stampIndex
 	int getStampIndex(void);
+
+	//! Getter Methode für stampNames
 	vector<string> getStampNames(void);
+
+	//! Getter Methode für stampMaps
 	vector<vlgTextureMap2D> getStampMaps(void);
+	
+	//! Getter Methode für staNames
 	GLuint* getStaNames(void);
 private:
 	
-	short status;		
-	int stampIndex;		
-	int anzahlStamps;	
+	short status;	//!< Variable für die Speicherung des Status während des Texturebindings	
+	int stampIndex;	//!< Variable für den Index des Listenplatzes der gewählten Texture	
+	int anzahlStamps;	//!< Variable für die Anzahl der Texturen; stampMaps.size()
 
-	GLuint staNames[1];	//!< Array zum Halten der Texturen
+	GLuint staNames[1];					//!< Array zum Halten der Texturen
 	vector<vlgTextureMap2D> stampMaps;	//!< Liste für zweidimensionale Texturen
 	vector<string> stampNames;	//!< Liste der Texturnamen
 	vlgTextureMap2D one;		//!< Variablen - Texturplatzhalter

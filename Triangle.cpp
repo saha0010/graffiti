@@ -1,17 +1,19 @@
 #include "Triangle.h"
 
-Triangle::Triangle(float x, float y, float z, float s, int i):size(s)
+Triangle::Triangle(float x, float y, float z, float size, int farbindex):size(size)
 {
 	setX(x);
 	setY(y);
 	setZ(z);
 	setFilled(true);
-	setActiveColorByIndex(i);
+	setActiveColorByIndex(farbindex);
 }
-
 
 Triangle::~Triangle(void)
 {
 }
-void Triangle::setSize(float s){size=s;}
-float Triangle::getSize(void){return (float)size;}
+void Triangle::setSize(float s)
+{size=s;}
+
+float Triangle::getSize(void)
+{return (float)size;}

@@ -14,6 +14,7 @@ TriangleView::TriangleView(std::vector<Triangle> &t):triangles(t)
 
 void TriangleView::draw(void)
 {
+	//Schleife durch die Dreiecksliste
 	for(int j = (int)triangles.size()-1; j>=0;j--)
 	{
 		glPolygonMode(GL_FRONT, GL_FILL);	

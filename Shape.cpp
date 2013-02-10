@@ -1,5 +1,9 @@
 #include "Shape.h"
 
+/*
+ * Nur Getter und Setter hier
+ */
+
 float Shape::getX(void)
 {return myX;}
 float Shape::getY(void)

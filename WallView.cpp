@@ -13,20 +13,17 @@ WallView::WallView(Wall &w)
 
 WallView::WallView(Wall *w)
 {
-	std::cout<<"WallView(Wall *w)"<<std::endl;
 	wall = w;
 }
 
 WallView& WallView::operator=(WallView& w)
 {
-	std::cout<<"WallView Kopierzuweisungskonstruktor"<<std::endl;
 	wall = w.wall;
 	return *this;
 }
 
 bool WallView::update(const vlgSubject &changedSubject)
 {
-	std::cout<<"WallView - Update()"<<std::endl;
 	return true;
 }
 
@@ -86,6 +83,7 @@ void WallView::dataReceived(bool data)
 		glColor3f(1.0f, 0.0f, 0.0f);
 }
 
+// Momentane Cursorpostion und gewählte Farbe
 void WallView::visionMode(void)
 {
 	float h = 2.0f*static_cast<float>(M_PI)/static_cast<float>(18);
@@ -95,10 +93,12 @@ void WallView::visionMode(void)
 		      ((float)wall->getActiveColor()->getGreen())/255,
 			  ((float)wall->getActiveColor()->getBlue())/255);
 			
-		for(int i = 0; i<360;i++)
-			glVertex3f(wall->getX() + 0.075f*cos(static_cast<float>(i*h)),
-					   wall->getY() + 0.075f*sin(static_cast<float>(i*h)),  
-					   2.0f);	
-		glEnd();
+	for(int i = 0; i<360;i++)
+	{
+		glVertex3f(wall->getX() + 0.075f*cos(static_cast<float>(i*h)),
+				   wall->getY() + 0.075f*sin(static_cast<float>(i*h)),  
+				   2.0f);
+	}
+	glEnd();
 }
 

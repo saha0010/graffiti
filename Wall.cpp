@@ -4,7 +4,6 @@
 Wall::Wall(void): backgroundIndex(0), received(false), showDataReceived(true), one(),two(),three(),four(),five(),six(),
 				  status(0), anzahlTexturen(6), index(0), moveX(0.0f), moveY(0.0f)
 {
-	std::cout<<"Wall()"<<std::endl;
 	for(int i=0;i<anzahlTexturen;i++)
 	{
 		texNames[i] = 0;
@@ -15,7 +14,6 @@ Wall::Wall(void): backgroundIndex(0), received(false), showDataReceived(true), o
 
 void Wall::init(void)
 {
-	std::cout<<"Wall::init()"<<std::endl;
 	glEnable(GL_TEXTURE_2D);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -26,7 +24,6 @@ void Wall::init(void)
 	{
 		status = textureMaps.at(i).read(textureNames.at(i));
 		glBindTexture(GL_TEXTURE_2D, texNames[i]);
-			std::cout<<"Bind Texture ["<<textureNames[i]<<"]..."<<std::endl;
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);	   
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); 
@@ -59,7 +56,6 @@ void Wall::fillNameListWall(void)
 
 void Wall::nextTexture(void)
 {
-	std::cout<<"Wall::nextTexture Index: "<<backgroundIndex<<std::endl;
 	if (backgroundIndex < (anzahlTexturen-1))
 	{
 		++backgroundIndex;
@@ -70,11 +66,10 @@ void Wall::nextTexture(void)
 		backgroundIndex = 0;
 		glBindTexture(GL_TEXTURE_2D, texNames[backgroundIndex]);
 	}
-
 }
+
 void Wall::previousTexture(void)
 {
-	std::cout<<"Wall::previousTexture Index: "<<backgroundIndex<< std::endl;
 	if(backgroundIndex >0)
 	{
 		--backgroundIndex;
@@ -83,25 +78,18 @@ void Wall::previousTexture(void)
 	else
 	{
 		backgroundIndex = 5;
-			glBindTexture(GL_TEXTURE_2D, texNames[backgroundIndex]);
+		glBindTexture(GL_TEXTURE_2D, texNames[backgroundIndex]);
 	}
-
 }
 
 float Wall::getX()
-{
-	return moveX;
-}
+{return moveX;}
+
 float Wall::getY()
-{
-	return moveY;
-}
+{return moveY;}
 
 void Wall::setX(float x)
-{
-	moveX = x;
-}
+{moveX = x;}
+
 void Wall::setY(float y)
-{
-	moveY = y;
-}
+{moveY = y;}

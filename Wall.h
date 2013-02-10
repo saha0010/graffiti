@@ -7,7 +7,7 @@
 #include "vlgTextureMap2D.h"
 #include "Color.h"
 
-//! Klasse zum erstellen des Hintergrundes - Texture Mapping
+//! Modell Klasse für den Hintergrund und das Interface
 class Wall : public Color
 {
 public:

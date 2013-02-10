@@ -7,7 +7,6 @@ Line::Line(void)
 
 Line::Line(int i)
 {
-	std::cout << "Line(int "<<i<<")"<< std::endl;
 	setActiveColorByIndex(i);
 }
 
@@ -15,8 +14,7 @@ void Line::clear()
 {
 	getMyX().clear();
 	getMyY().clear();
-	getMyZ().clear();	//new
-	//getMyUndoSizeZ().clear();	//new
+	getMyZ().clear();	
 	myUndoSizeZ = 0.0f;
 	notify();
 }
@@ -27,8 +25,8 @@ std::vector<float> Line::getMyX()
 std::vector<float> Line::getMyY()
 {return myY;}
 
-std::vector<float> Line::getMyZ() //new
+std::vector<float> Line::getMyZ() 
 {return myZ;}
 
-float Line::getMyUndoSizeZ()	//new
+float Line::getMyUndoSizeZ()	
 {return myUndoSizeZ;}

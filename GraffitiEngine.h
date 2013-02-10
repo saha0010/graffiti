@@ -21,7 +21,7 @@
 
 #include "Color.h"
 
-//! Klasse einer OpenGL-Anwendung mit VRPN-Support
+//! Anwendungsklasse einer OpenGL-Anwendung mit VRPN-Support
 class GraffitiEngine : public vlgVRPNEngine
 {
 public:

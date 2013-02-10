@@ -9,7 +9,7 @@
 #include "Line.h"
 
 
-//! View mit einer OpenGL-Ausgabe
+//! View Klasse für die Ausgabe von Line
 class CircleLineView : public vlgGLObserver
 {
 
@@ -37,10 +37,10 @@ public:
 	//! Update, Änderungen werden angepasst
 	virtual bool update(const vlgSubject &changedSubject);
 
-	//! Setter Methode für Membervariable "blending"
+	//! Setter Methode für Variable "blending"
 	void setBlending(bool b);
 
-	//! Getter Methode für Membervariable "blendind"
+	//! Getter Methode für Variable "blendind"
 	bool getBlending(void);
 
 private:

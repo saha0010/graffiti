@@ -58,7 +58,7 @@ public:
 		* empfangen werden und setzt dementsprechend glColor auf rot
 		* oder grün.
 		*
-		* \param received liefert Information ob Tracker-Daten empfangen werden.
+		* \param bool data
 		* \sa dataReceivedCircle(), visionMode()
 	*/
 	virtual void dataReceived(bool data);
@@ -66,19 +66,18 @@ public:
 	//! Visuelle Hilfe zur Erkennung der aktuellen Position der Haupthand
 	/*!
 		* Die visionMode-Funktion stellt an der aktuellen Position der
-		* Anwendungsrelativen Hand (Standard: rechte Hand) einen Kreis dar.
+		* Anwendungsrelativen Hand (Standard: rechte Hand) einen Kreis 
+		* in der momentan gewählten Farbe dar.
 		* Mithilfe dieses Kreises lässt sich das bedienen der Anwendung 
 		* vereinfachen.  Diese visuelle Rückgabe kann über das false
 		* setzten des Bool showDataReceived ausgeblendet werden.
 		*
-		* \sa dataReceivedCircle(), chosenColor()
+		* \sa dataReceivedCircle(), GraffitiEngine::keyboard()
 	*/
 	void visionMode(void);
 
 
 private:
-	//! Das Subject, das wir beobachten
-	Wall *wall;
-
+	Wall *wall; //!< Das Subject, das wir beobachten
 };
 #endif

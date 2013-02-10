@@ -1,19 +1,18 @@
 #include "Stamp.h"
 
-Stamp::Stamp(float x, float y, float z):status(0),stampIndex(0),anzahlStamps(1), one() 							
+Stamp::Stamp(float x, float y, float z):status(0),stampIndex(0), one() 							
 {
-	std::cout<<"Stamp(float "<<x<<", float "<<y<<")"<<std::endl;
 	setX(x);
 	setY(y);
 	setZ(z);
 	setWidth(0.57142f);
 	setHeight(0.57142f);
 	createTextureMap();
+	anzahlStamps = (int)stampMaps.size();
 }
 
 void Stamp::createTextureMap(void)
 {
-	std::cout<<"Stamp::init()"<<std::endl;
 	glEnable(GL_TEXTURE_2D);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -25,7 +24,6 @@ void Stamp::createTextureMap(void)
 	{
 		status = stampMaps.at(i).read(stampNames.at(i));
 		glBindTexture(GL_TEXTURE_2D, staNames[i]);
-			std::cout<<"Bind StampTexture ["<<stampNames[i]<<"]..."<<std::endl;
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);	   
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); 
@@ -60,15 +58,13 @@ void Stamp::nextStamp(void)
 		glBindTexture(GL_TEXTURE_2D, staNames[stampIndex]);
 	}	
 }
-short Stamp::getStatus(void)
-{return status;}
-int Stamp::getAnzahlStamps(void)
-{return anzahlStamps;}
+
 int Stamp::getStampIndex(void)
 {return stampIndex;}
 
 vector<string> Stamp::getStampNames(void)
 {return stampNames;}
+
 vector<vlgTextureMap2D> Stamp::getStampMaps(void)
 {return stampMaps;}
 

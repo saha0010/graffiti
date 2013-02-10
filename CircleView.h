@@ -4,7 +4,7 @@
 #include <vlgGLObserver.h>
 #include "Circle.h"
 
-//! View mit einer OpenGL-Ausgabe
+//! View Klasse für die Ausgabe von Circle
 class CircleView : public vlgGLObserver
 {
 public:
@@ -24,10 +24,11 @@ private:
 	float h;	//!< 2*Pi: Anzahl der Ecken, dient zum bestimmen der Punkte entlang der Kreis gezeichnet wird.	
 	int n;		//!< Anzahl der Ecken für die Darstellung des Kreises
 
-	//! Grafische Ausgabe, wird anstatt Display() aufgerufen
+	//! Grafische Ausgabe, wird in der display()-Funktion der Anwedungsklasse aufgerufen
 	/*!
-		* Die draw-Funktion der CircleView ist für das betrachten
-		* aller Kreise in der Kreiseliste zuständig.
+		* Die draw-Funktion ist für das malen
+		* der Kreise zuständig. Diese Funktion wird von der Anwednungsklasse konstant
+		* automatisch aufgerufen, ohne das ein notify() notwendig ist.
 	*/
 	virtual void draw(void);
 

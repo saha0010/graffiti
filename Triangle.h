@@ -6,18 +6,30 @@
 #include <iostream>
 #include "Shape.h"
 
-//! Klasse zum erstellen der Kreise
+//! Modell Klasse für Dreiecke
 class Triangle : public Shape
 {
 public:
-	//! Konstruktor mit Positionswerten(x,y,z) Größe (s) und dem Farbindex(i)
-	Triangle(float x, float y, float z,float s, int i);
+	//! Konstruktor
+	/*!
+	 *	\param float x, float y, float z, float size, int farbindex
+	 */
+	Triangle(float x, float y, float z,float size, int farbindex);
+
+	//! Dekonstruktor
 	~Triangle(void);
+
+	//! Setter Methode für size
 	void setSize(float s);
+
+	//! Getter Methode für size
 	float getSize(void);
 
 private:
 	
-	float size;
+	float size;	//!< Variable um später die Größe des Dreieckes beeinflussen zu können
+				/*!<
+				 *	Diese Funktion wurde noch nicht implementiert!!!
+				 */
 };
 #endif

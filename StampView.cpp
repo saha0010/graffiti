@@ -2,13 +2,11 @@
 
 StampView::StampView(std::vector<Stamp> &s):stamps(s)
 {
-	std::cout << "StampView(std::vector<Stamp> &s)" << std::endl;
 	//attach() wird impliziet aufgerufen
 }
 
 void StampView::draw(void)
 {
-	//for(int i=0;i<stamps.size();i++)
 	for(int i = (int)stamps.size()-1; i>=0;i--)
 	{
 	glEnable(GL_TEXTURE_2D);
@@ -33,7 +31,6 @@ void StampView::draw(void)
 
 
 bool StampView::update(const vlgSubject &changedSubject)
-{std::cout<<"StampView::Update()"<<std::endl;
-
-return true;
+{
+	return true;
 }

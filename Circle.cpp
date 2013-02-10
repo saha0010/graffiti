@@ -9,10 +9,9 @@ Circle::Circle(float r, float x, float y, float z, int farbIndex):radius(r)
 	setActiveColorByIndex(farbIndex);
 }
 	
-	void Circle::setRadius(float r)
-	{radius = r;}
+void Circle::setRadius(float r)
+{radius = r;}
 
-	
-	float Circle::getRadius(void)
-	{return radius;}
+float Circle::getRadius(void)
+{return radius;}
 

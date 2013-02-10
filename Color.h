@@ -5,6 +5,7 @@
 #include <vlgColor.h>
 #include "vector"
 
+//! Modell Klasse von der nur abgeleitet wird 
 class Color : public vlgSubject
 {
 public:
@@ -13,6 +14,7 @@ public:
 	 * Setzt den activeColorIndex auf 0
 	 */
 	Color(void);
+
 	//!Konstruktor
 	/*!
 	 * Ruft Default Konstruktor auf und setzt Farbindex.
@@ -33,11 +35,8 @@ public:
 	int getColorCount(void);
 
 private:
-	//!< aktive Farbe
-	vlgColor *activeColor;	
-	
-	//!< Farbliste
-	std::vector<vlgColor*> colorList;
+	vlgColor *activeColor;	//!< aktive Farbe
 
+	std::vector<vlgColor*> colorList; 	//!< Farbliste
 };
 #endif	COLOR
