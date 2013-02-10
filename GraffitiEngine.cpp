@@ -72,7 +72,7 @@ void GraffitiEngine::attachObserver(void)
 }
 
 
-//!VRPN-Geräte aktivieren
+//VRPN-Geräte aktivieren
 void GraffitiEngine::VRPNGeraete(void)
 {	
 	useAnalogDevice("Mouse0@localhost");
@@ -350,12 +350,7 @@ void GraffitiEngine::printLists()
 	std::cout <<"undosize Var:"<< lineList.at(0).getMyUndoSizeZ() <<std::endl;
 }
 
-//!Tastatur handler von GLUT-Engine(Localhost)
-/*! Alle Aktionen die hier definiert sind, 
- *	können unabhängig davon ob, 
- *	Tracker oder Maus eingestellt ist,
- *	benutzt werden.
- */
+//Tastatur handler von GLUT-Engine(Localhost)
 void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 {
 	switch (key) 
@@ -368,7 +363,7 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 		std::cout << "VRPN Daten werden nicht verarbeitet!" << std::endl;
 		idleOff();
 	break;
-	case 'g':
+	case 'l':
 		printLists();
 	break;
 	case 'c':
@@ -391,7 +386,7 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 	case 'W':
 		wall->previousTexture();
 		break;
-	case 'o':
+	case 'v':
 		//Change View CircleLine = Default
 		switch(whichView)
 		{
@@ -420,13 +415,13 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 	case'k':
 		addCircle();
 		break;
-	case 'f':
+	case'f':
 		addTriangle();	
 		break;
 	case'r':
 		savePicture();
 		break;
-	case'j':
+	case'i':
 		wall->showDataReceived = !wall->showDataReceived;
 		break;
 	case'h':
@@ -443,27 +438,27 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 		break;
 	}
 }
-int GraffitiEngine::incColorIndex(int c)
+int GraffitiEngine::incColorIndex(void)
 {
-	
-	if(c >= colorCount-1){
-		std::cout<<"setting colorIndex from "<<c<<" to 0"<<std::endl;
+
+	if(colorIndex >= colorCount-1){
+		std::cout<<"setting colorIndex from "<<colorIndex<<" to 0"<<std::endl;
 		return 0;	
 	}
 	else {
-		std::cout<<"setting colorIndex from "<<c<<" to "<<(c+1)<<std::endl;
-		return ++c;
+		std::cout<<"setting colorIndex from "<<colorIndex<<" to "<<(colorIndex+1)<<std::endl;
+		return ++colorIndex;
 	}
 }
-int GraffitiEngine::decColorIndex(int c)
+int GraffitiEngine::decColorIndex(void)
 {
-	if(c <= 0){
-		std::cout<<"setting colorIndex from "<<c<<" to "<<colorCount-1<<std::endl;
+	if(colorIndex <= 0){
+		std::cout<<"setting colorIndex from "<<colorIndex<<" to "<<colorCount-1<<std::endl;
 		return colorCount-1;
 	}
 	else{
-		std::cout<<"setting colorIndex from "<<c<<" to "<<(c-1)<<std::endl;
-		return --c;
+		std::cout<<"setting colorIndex from "<<colorIndex<<" to "<<(colorIndex-1)<<std::endl;
+		return --colorIndex;
 	}
 }
 //!Bild verwerfen
@@ -610,18 +605,18 @@ void GraffitiEngine::about(void)
 	std::cout << "  s	   : VRPN ausgabe deaktivieren        " << std::endl;
     std::cout << "	SPACE  : Sprühknopf, kann nur zusammen mit dem Tracker benutzt werden!";
 	std::cout << 		    " (t) muss also aktiviert sein"		<< std::endl;
-	std::cout << "  g  	   : Ausgabe der Anzahl der gemalten Objekte" << std::endl;
+	std::cout << "  l  	   : Ausgabe der Anzahl der gemalten Objekte" << std::endl;
 	std::cout << "  c  	   : Alle gemalten Objekte entfernen		 " << std::endl;
 	std::cout << "  t  	   : Umschalten zwischen  Tracker/WiiMote und Tastatur/Maus "  << std::endl;
 	std::cout << "  w  	   : Nächster Hintergrund					 "  << std::endl;
 	std::cout << "  W 	   : Vorheriger Hintergrund					 "  << std::endl;
 	std::cout << "  a  	   : Nächste Farbe							 "  << std::endl;
 	std::cout << "  d 	   : Vorherige Farbe						 "  << std::endl;
-	std::cout << "  o  	   : Umschalten zwischen PolyLineView und CircleLineView"  << std::endl;
+	std::cout << "  v  	   : Umschalten zwischen PolyLineView und CircleLineView"  << std::endl;
 	std::cout << "  h  	   : Logo/Bitmap hinzufügen					 "  << std::endl;
 	std::cout << "  k  	   : Kreis malen							 "  << std::endl;
 	std::cout << "  z  	   : Rückgängig								 "  << std::endl;
-	std::cout << "  j  	   : Interface ein/ausblenden				 "  << std::endl;
+	std::cout << "  i  	   : Interface ein/ausblenden				 "  << std::endl;
 	std::cout << "  r  	   : Bild abspeichern						 "  << std::endl;
     std::cout << " ESC, q/Q: Programm beenden                      " << std::endl;
 	std::cout << "--------------------------------------------" << std::endl;

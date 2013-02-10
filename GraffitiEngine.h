@@ -37,8 +37,12 @@ public:
 		//!Tracker-Device(Kinect)
     virtual void handleTracker(void* userData, const vrpn_TRACKERCB t);
 
-//"Normale" vlg-Funktionen
-	//!Keyboardfunktion
+	//!Tastatur handler von GLUT-Engine(Localhost)
+	/* Alle Aktionen die hier definiert sind, 
+	 *	können unabhängig davon ob, 
+	 *	Tracker oder Maus eingestellt ist,
+	 *	benutzt werden.
+	 */
 	void keyboard(unsigned char key, int x, int y);
 	//!Anwendungsbeschreibung
 	void about(void);
@@ -55,6 +59,7 @@ private:
 	//!Liste der gemalten Dreiecke
 	std::vector<Triangle> triangleList;
 
+	//!Variable einer Linie mit der gearbeitet wird
 	Line *tLine;
 
 	//!Zeiger auf den Hintergrund
@@ -89,7 +94,7 @@ private:
 	float wY;		//!< Y-Wert der Maus bzw. des Tracker
 	float wZ;		//!< Z-Wert der Maus bzw. des Tracker
 
-	// Monitorkoordinaten (4:3, 16:9, etc.) seperat zuweisen
+	// Monitorkoordinaten (4:3, 16:9, etc.) seperat im Konstruktor zuweisen 
 	float xMin;		//!< kleinster x-Wert der Monitor-/Leinwand-Koordinate
 	float xMax;		//!< größter x-Wert der Monitor-/Leinwand-Koordinate
 	float yMin;		//!< kleinster y-Wert der Monitor-/Leinwand-Koordinate
@@ -119,14 +124,15 @@ private:
 	float yGeste;	//!< y-Werte zum erkennen der Wischen-Geste
 	bool leftHand;	//!< Boolean zum erkennen der Wischen-Startgeste
 
-	float zUndoSize;	//new globale z-Ebene für Subjekte
+
+	float zUndoSize;	
 
 	//! Liste für die undo() Funktion
-		/*!Immer wenn ein Objekt gemalt wird wird zusätzlich je nach Objekt ein int in den vector gepusht.
-		   0 = PolyLine
-		   1 = Stamp
-		   2 = Circle
-		*/
+	/*!Immer wenn ein Objekt gemalt wird wird zusätzlich je nach Objekt ein int in den vector gepusht.
+	 *	0 = PolyLine
+	 *	1 = Stamp
+	 *	2 = Circle
+	 */
 	vector<int> undoList; 
 
 	//!Alle Observer hinzufügen(wird in initContext() einmalig aufgerufen)
@@ -192,11 +198,10 @@ private:
 		* Ist das Ende des Arrayindex bereits erreicht, wird colorIndex wieder
 		* auf den kleinsten Arrayindex gesetzt.
 		*
-		* \param colorIndex int der zurückliefert welche Farbe gesetzt wird.
-		* \return \a incNextColorIndex() liefert den neuen \a colorIndex zurück.
+		* \return ++colorIndex
 		* \sa nextColor(), decColorIndex()
 	*/
-	int incColorIndex(int c);
+	int incColorIndex(void);
 
 	//! Funktion um den colorIndex zurück zuschalten
 	/*!
@@ -204,16 +209,15 @@ private:
 		* Ist der Anfang des Arrayindex bereits erreicht, wird colorIndex wieder
 		* auf den letzten Arrayindex gesetzt.
 		*
-		* \param colorIndex int der zurückliefert welche Farbe gesetzt wird.
-		* \return \a decColorIndex() liefert den neuen \a colorIndex zurück.
+		* \return --colorIndex
 		* \sa previousColor(), incColorIndex()
 	*/
-	int decColorIndex(int c);
+	int decColorIndex(void);
 
 	//!Gibt Anzahl der gemalenten PolyLines aus
 	/*!
 		* Die printLists-Funktion gibt die Größe der Subjektlisten auf der
-		* Konsole als String zurück.
+		* Konsole als String aus.
 	*/
 	void printLists(void);
 
@@ -232,7 +236,6 @@ private:
 		* den neuen Farbindex. Dieser Index wird der neu erzeugten Linie übergeben
 		* und dem Hintergrund-Subjekt wird die aktuelle Farbe mitgeteilt.
 		*
-		* \param colorIndex int der zurückliefert welche Farbe gesetzt wird.
 		* \sa nextColor(), incNextColorIndex()
 	*/
 	void nextColor(void);
@@ -243,58 +246,53 @@ private:
 		* den neuen Farbindex. Dieser Index wird der neu erzeugten Linie übergeben
 		* und dem Hintergrund-Subjekt wird die aktuelle Farbe mitgeteilt.
 		*
-		* \param colorIndex int der zurückliefert welche Farbe gesetzt wird.
 		* \sa nextColor(), decNextColorIndex()
 	*/
 	void previousColor(void);
 
 	//! Funktion um einen Kreis zu erstellen
 	/*!
-		* Die addCircle-Funktion prüft ob Tracker oder Maus-Daten empfangen werden.
-		* Dies geschieht mithilfe vom bool \a tracker. In Abhängigkeit der Daten 
-		* werden die Daten entsprechenden umgerechnet und einer neuer \a Circle()
-		* wird erstellt, seiner zugehörigen Liste übergeben, an der aktuellen Position
-		* gezeichnet und der Undo-Liste als Index = 2 angehängt.
-		*
-		* \param tracker bool der zurückliefert ob Tracker oder Maus-Daten empfangen werden.
-		* \sa coordAdjuTracker(), coordAdjuMouse(), addCircle()
+		* Die Funktion greift auf die Variable trackAry und liest x,y und z Werte.
+		* Es wird ein neues Circle Objekt erzeugt und in die cirleList gepusht.
+		* Anschließend wird in der undoList eine 2 angehängt
+		* \sa coordAdjuTracker(), coordAdjuMouse(), addCTriangle(), addStamp()
 	*/
 	void addCircle(void);
 
 	//! Funktion um ein Dreieck zu erstellen
+	/*!
+		* Die Funktion greift auf die Variable trackAry und liest x,y und z Werte.
+		* Es wird ein neues Triangle Objekt erzeugt und in die triangleList gepusht.
+		* Anschließend wird in der undoList eine 3 angehängt.
+		*
+		* \sa coordAdjuTracker(), coordAdjuMouse(), addCircle()
+	*/
 	void addTriangle(void);
-
-
 
 	//! Funktion um ein Bitmap anzuhängen
 		/*!
-		* Die addStamp-Funktion prüft ob Tracker oder Maus-Daten empfangen werden.
-		* Dies geschieht mithilfe vom bool \a tracker. In Abhängigkeit der Daten 
-		* werden die Daten entsprechenden umgerechnet und einer neuer \a Stamp()
-		* wird erstellt, seiner zugehörigen Liste übergeben, an der aktuellen Position
-		* gezeichnet und der Undo-Liste als Index = 1 angehängt.
+		* Die Funktion greift auf die Variable trackAry und liest x,y und z Werte.
+		* Es wird ein neues Triangle Objekt erzeugt und in die triangleList gepusht.
+		* Anschließend wird in der undoList eine 1 angehängt.
 		*
-		* \param tracker bool der zurückliefert ob Tracker oder Maus-Daten empfangen werden
-		* \sa coordAdjuTracker(), coordAdjuMouse(), addCircle()
+		* \sa coordAdjuTracker(), coordAdjuMouse(), addCircle(), addTriangle()
 	*/
 	void addStamp(void);
 
 	//! Funktion zum Malen, Sprühmodus aktiv
 		/*!
-		* Die sprayPressed-Funktion setzt den Boolean pressed auf true und erstellt 
-		* eine neue Linie mit dem aktiven Farbindex als Parameter. Anschließend teilt 
-		* sie dem Observer für das aktuelle Liniensubjekt die zu beobachtende Linie mit.
-		*
+		* Die sprayPressed-Funktion setzt den Boolean pressed auf true und setzt den colorIndex
+		* der Line an lineList[0].
 		* \sa sprayReleased()
 	*/
 	void sprayPressed(void);
 
 	//! Funktion zum Malen, Sprühmodus inaktiv
 		/*!
-		* Die sprayReleased-Funktion gibt die aktuelle Linie in die Linienliste weiter.
-		* Die aktuelle Linie wird der Undo-Liste als Index = 0 angehängt und der 
-		* Boolean pressed wird auf false gesetzt.
-		*
+		* Die sparyRelease-Funktion pusht die Line an lineList[0] um eins weiter und stellt sicher,
+		* dass lineList[0] bereit für die nächste Line ist.
+		* Es wird der Boolean pressed auf false gesetzt.
+		* 
 		* \sa sprayPressed()
 	*/
 	void sprayReleased(void);

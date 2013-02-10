@@ -2,7 +2,7 @@
 #define POLYLINEVIEW
 
 #include <vlgGLObserver.h>
-#include "PolyLine.h"
+#include "Line.h"
 #include "vector"
 
 //! View mit einer OpenGL-Ausgabe

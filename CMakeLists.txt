@@ -26,8 +26,7 @@ make_directory(${CMAKE_CURRENT_BINARY_DIR}/savedPictures)
 
 
 # Das ausführbare Programm
-add_executable (Graffiti graffiti.cpp GraffitiEngine.cpp GraffitiEngine.h 
-                PolyLine.cpp PolyLine.h
+add_executable (Graffiti graffiti.cpp GraffitiEngine.cpp GraffitiEngine.h          
                 PolyLineView.cpp PolyLineView.h 
 				Wall.h Wall.cpp 
 				WallView.h WallView.cpp
