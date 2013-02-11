@@ -77,7 +77,7 @@ void GraffitiEngine::VRPNGeraete(void)
 {	
 	useAnalogDevice("Mouse0@localhost");
 	useButtonDevice("Keyboard0@localhost");	
-//	useButtonDevice("WiiMote0@localhost");
+	useButtonDevice("WiiMote0@localhost");
 //	useTrackerDevice("Tracker0@zwo210-GONZO.ds.fh-kl.de");
 //	useButtonDevice("WiiMote0@davis.ds.fh-kl.de");
 //	useTrackerDevice("Tracker0@miles.ds.fh-kl.de");
@@ -388,7 +388,7 @@ void GraffitiEngine::keyboard(unsigned char key, int x, int y)
 	case'k':
 		addCircle();
 		break;
-	case'f':
+	case'j':
 		addTriangle();	
 		break;
 	case'r':
@@ -589,7 +589,7 @@ void GraffitiEngine::changeLineView(void)
 void GraffitiEngine::about(void)
 {
 	std::cout << "--------------------------------------------" << std::endl;
-    std::cout << "-         Virtuelle Graffiti Wand          -" << std::endl;
+    std::cout << "-         Virtual Graffiti			     -" << std::endl;
 	std::cout << "--------------------------------------------" << std::endl;
     std::cout << "- Tastatur                                 -" << std::endl; 
     std::cout << "--------------------------------------------" << std::endl; 
@@ -607,6 +607,7 @@ void GraffitiEngine::about(void)
 	std::cout << "  v  	   : Umschalten zwischen PolyLineView und CircleLineView"  << std::endl;
 	std::cout << "  h  	   : Logo/Bitmap hinzufügen					 "  << std::endl;
 	std::cout << "  k  	   : Kreis malen							 "  << std::endl;
+	std::cout << "  j  	   : Dreieck malen							 "  << std::endl;
 	std::cout << "  z  	   : Rückgängig								 "  << std::endl;
 	std::cout << "  i  	   : Interface ein/ausblenden				 "  << std::endl;
 	std::cout << "  r  	   : Bild abspeichern						 "  << std::endl;

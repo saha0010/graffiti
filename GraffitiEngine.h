@@ -152,8 +152,7 @@ private:
 
 	//!VRPN-Geräte aktivieren(wird in initContext() einmalig aufgerufen)
 	/*!
-		* Manuell VRPN-Geräte aktivieren, jene sind auskommentiert.
-		*
+		* Manuell VRPN-Geräte aktivieren und neu kompilieren.
 		* \sa aktive VRPN-Geräte  
 	*/
 	void VRPNGeraete(void);
