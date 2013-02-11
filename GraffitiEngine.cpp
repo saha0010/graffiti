@@ -604,6 +604,7 @@ void GraffitiEngine::about(void)
 	std::cout << "  W 	   : Vorheriger Hintergrund					 "  << std::endl;
 	std::cout << "  a  	   : Nächste Farbe							 "  << std::endl;
 	std::cout << "  d 	   : Vorherige Farbe						 "  << std::endl;
+	std::cout << "  b 	   : Blending ein und ausschalten						 "  << std::endl;
 	std::cout << "  v  	   : Umschalten zwischen PolyLineView und CircleLineView"  << std::endl;
 	std::cout << "  h  	   : Logo/Bitmap hinzufügen					 "  << std::endl;
 	std::cout << "  k  	   : Kreis malen							 "  << std::endl;
